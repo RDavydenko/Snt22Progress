@@ -15,8 +15,11 @@
 
   <ItemGroup>
     <Folder Include="Web.Net\" />
-    <Folder Include="DataAccess\" />
     <Folder Include="BussinesLogic\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Snt22Progress.DataAccess\Snt22Progress.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
