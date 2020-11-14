@@ -23,9 +23,19 @@ namespace Snt22Progress.DataAccess.Infrastructure
 		private IDbConnection _dbConnection;
 
 		/// <summary>
+		/// Название схемы
+		/// </summary>
+		public abstract string SchemaName { get; }
+
+		/// <summary>
 		/// Название таблицы
 		/// </summary>
 		public abstract string TableName { get; }
+
+		/// <summary>
+		/// Путь к таблице <схема>.<название_таблицы>
+		/// </summary>
+		public string TablePath => $"{SchemaName}.{TableName}";
 
 		/// <summary>
 		/// Названия всех полей сущности
@@ -56,20 +66,20 @@ namespace Snt22Progress.DataAccess.Infrastructure
 			{
 				case SqlStringType.Select:
 					sb.AppendLine($"SELECT {GetSelectValues()}");
-					sb.AppendLine($"FROM {TableName}");
+					sb.AppendLine($"FROM {TablePath}");
 					break;
 				case SqlStringType.Insert:
-					sb.AppendLine($"INSERT INTO {TableName} ({GetNameColumnsForInsert()})");
+					sb.AppendLine($"INSERT INTO {TablePath} ({GetNameColumnsForInsert()})");
 					sb.AppendLine($"OUTPUT INSERTED.[Id]");
 					sb.AppendLine($"VALUES ({GetValuesForInsert(entity)})");
 					break;
 				case SqlStringType.Update:
-					sb.AppendLine($"UPDATE {TableName}");
+					sb.AppendLine($"UPDATE {TablePath}");
 					sb.AppendLine($"SET {GetValuesForUpdate(entity)}");
-					sb.AppendLine($"WHERE id = {entity.id}");
+					sb.AppendLine($"WHERE id = {entity.Id}");
 					break;
 				case SqlStringType.Delete:
-					sb.AppendLine($"DELETE FROM {TableName}");
+					sb.AppendLine($"DELETE FROM {TablePath}");
 					break;
 			}
 			return sb.ToString();
@@ -77,7 +87,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 
 		private string[] GetAllFieldNames()
 		{
-			return _entityType.GetProperties().Select(x => x.Name.ToLower()).ToArray();
+			return _entityType.GetProperties().Select(x => x.Name).ToArray();
 		}
 
 		private string[] GetAllNoPkFieldNames()
@@ -85,13 +95,13 @@ namespace Snt22Progress.DataAccess.Infrastructure
 			TEntity entity;
 			return _entityType.GetProperties().Select(x =>
 			{
-				if (x.Name == nameof(entity.id)) // Идентификатор не устанавливаем в INSERT
+				if (x.Name == nameof(entity.Id)) // Идентификатор не устанавливаем в INSERT
 				{
 					return null;
 				}
 				else
 				{
-					return x.Name.ToLower();
+					return x.Name;
 				}
 			}).Where(x => x != null).ToArray();
 		}
@@ -150,10 +160,6 @@ namespace Snt22Progress.DataAccess.Infrastructure
 
 		public async Task<TEntity> GetAsync(int id)
 		{
-			var sql = GetBaseSqlString(SqlStringType.Select);
-			var sb = new StringBuilder(sql);
-			sb.AppendLine($"WHERE id = {id}");
-
 			using (_dbConnection = GetNewConnection())
 			{
 				_dbConnection.Open();
@@ -203,7 +209,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 				_dbConnection.Close();
 
 				return success ? 
-					await GetAsync(entity.id)
+					await GetAsync(entity.Id)
 					: entity;
 			}
 		}

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Snt22Progress.DataAccess.Infrastructure;
+using Snt22Progress.DataAccess.Models;
 using Snt22Progress.DataAccess.Repositories;
 
 namespace Snt22Progress.Tests.DataAccess
@@ -12,47 +14,48 @@ namespace Snt22Progress.Tests.DataAccess
 	public class BasePostgresRepositoryTest
 	{
 		[TestMethod]
+		public async Task RepositoryConnectionTest()
+		{
+			string con = "Server=localhost;Port=5432;Database=postgres;User ID=postgres;Password=741741741;Search Path=progress;Pooling=false;";
+
+			IRepository<User, int> usersRepository = new UsersRepository(con);
+			IRepository<Advertisement, int> advertisementsRepository = new AdvertisementsRepository(con);
+			IRepository<AdvertisementFile, int> advertisementFilesRepository = new AdvertisementFilesRepository(con);
+			IRepository<Choise, int> choisesRepository = new ChoisesRepository(con);
+			IRepository<Document, int> documentsRepository = new DocumentsRepository(con);
+			IRepository<Post, int> postsRepository = new PostsRepository(con);
+			IRepository<Question, int> questionsRepository = new QuestionsRepository(con);
+			IRepository<Role, int> rolesRepository = new RolesRepository(con);
+			IRepository<UserToChoise, int> userToChoisesRepository = new UserToChoisesRepository(con);
+			IRepository<UserToRole, int> userToRolesRepository = new UserToRolesRepository(con);
+			IRepository<ValuePair, int> valuePairsRepository = new ValuePairsRepository(con);
+
+			int id = 1;
+			await usersRepository.GetAsync(id);
+			await advertisementsRepository.GetAsync(id);
+			await advertisementFilesRepository.GetAsync(id);
+			await choisesRepository.GetAsync(id);
+			await documentsRepository.GetAsync(id);
+			await postsRepository.GetAsync(id);
+			await questionsRepository.GetAsync(id);
+			await rolesRepository.GetAsync(id);
+			await userToChoisesRepository.GetAsync(id);
+			await userToRolesRepository.GetAsync(id);
+			await valuePairsRepository.GetAsync(id);
+		}
+
+
+		[TestMethod]
 		public async Task RepositoryMethodsTest()
 		{
 			string con = "Server=localhost;Port=5432;Database=postgres;User ID=postgres;Password=741741741;Search Path=progress;Pooling=false;";
 
 			var repos = new UsersRepository(con);
 			var users = (await repos.GetAsync()).ToArray();
-
-			var r = await repos.AddAsync(new Snt22Progress.DataAccess.Models.User
-			{
-				id = 1,
-				name = "Vasya",
-				age = 10,
-				surname = "Pupkin"
-			});
-
-			var r2 = await repos.AddAsync(new Snt22Progress.DataAccess.Models.User
-			{
-				id = 2,
-				name = "Pupka",
-				age = 10,
-				surname = "Vasin"
-			});
-
-			var user = await repos.GetAsync(1);
-
-			var user2 = await repos.GetAsync(10);
-
-			var deleted = await repos.DeleteAsync(1);
-
-			var nodeleted = await repos.DeleteAsync(100);
+						
+			var nodeleted = await repos.DeleteAsync(-100);
 
 			var users2 = (await repos.GetAsync()).ToArray();
-
-			users2[0].name = "Updated";
-			users2[0].age = null;
-			var updated = await repos.UpdateAsync(users2[0]);
-
-			users2[1].id = 9;
-
-			var updatedWithId = await repos.UpdateAsync(users[1]);
-
 
 			var users3 = await repos.GetAsync();
 		}

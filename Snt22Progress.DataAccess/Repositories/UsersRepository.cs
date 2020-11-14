@@ -8,7 +8,9 @@ namespace Snt22Progress.DataAccess.Repositories
 {
 	public class UsersRepository : BasePostgresRepository<User>, IRepository<User, int>
 	{
-		public override string TableName => "progress.users";
+		public override string SchemaName => "progress";
+
+		public override string TableName => "users";
 
 		public UsersRepository(string connection) : base(connection)
 		{

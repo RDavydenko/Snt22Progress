@@ -15,7 +15,8 @@ namespace Snt22Progress.DataAccess.Infrastructure
 
 		protected override IDbConnection GetNewConnection()
 		{
-			return new NpgsqlConnection(_connection);
+			var connection =  new NpgsqlConnection(_connection);
+			return connection;
 		}
 	}
 }
