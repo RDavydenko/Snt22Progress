@@ -13,6 +13,6 @@ namespace Snt22Progress.DataAccess.Infrastructure
 		/// <summary>
 		/// Уникальный идентификатор сущности
 		/// </summary>
-		TId Id { get; set; }
+		TId id { get; set; }
 	}
 }

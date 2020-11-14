@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Snt22Progress.DataAccess.Repositories
 {
-	public class UsersRepository : BasePostgresRepository<User, int>, IRepository<User, int>
+	public class UsersRepository : BasePostgresRepository<User>, IRepository<User, int>
 	{
 		public override string TableName => "progress.users";
 

@@ -21,11 +21,40 @@ namespace Snt22Progress.Tests.DataAccess
 
 			var r = await repos.AddAsync(new Snt22Progress.DataAccess.Models.User
 			{
-				Id = 1,
-				Name = "Vasya",
-				Age = 10,
-				Surname = "Pupkin"
+				id = 1,
+				name = "Vasya",
+				age = 10,
+				surname = "Pupkin"
 			});
+
+			var r2 = await repos.AddAsync(new Snt22Progress.DataAccess.Models.User
+			{
+				id = 2,
+				name = "Pupka",
+				age = 10,
+				surname = "Vasin"
+			});
+
+			var user = await repos.GetAsync(1);
+
+			var user2 = await repos.GetAsync(10);
+
+			var deleted = await repos.DeleteAsync(1);
+
+			var nodeleted = await repos.DeleteAsync(100);
+
+			var users2 = (await repos.GetAsync()).ToArray();
+
+			users2[0].name = "Updated";
+			users2[0].age = null;
+			var updated = await repos.UpdateAsync(users2[0]);
+
+			users2[1].id = 9;
+
+			var updatedWithId = await repos.UpdateAsync(users[1]);
+
+
+			var users3 = await repos.GetAsync();
 		}
 	}
 }

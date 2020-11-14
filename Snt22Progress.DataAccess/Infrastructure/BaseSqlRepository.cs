@@ -12,8 +12,8 @@ namespace Snt22Progress.DataAccess.Infrastructure
 	/// <summary>
 	/// Абстрактный класс для работы с SQL базами данных
 	/// </summary>
-	public abstract class BaseSqlRepository<TEntity, TId> : IRepository<TEntity, TId>
-		where TEntity : class, IBaseEntity<TId>, new()
+	public abstract class BaseSqlRepository<TEntity> : IRepository<TEntity, int>
+		where TEntity : class, IBaseEntity<int>, new()
 	{
 		protected readonly string _connection;
 
@@ -66,7 +66,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 				case SqlStringType.Update:
 					sb.AppendLine($"UPDATE {TableName}");
 					sb.AppendLine($"SET {GetValuesForUpdate(entity)}");
-					sb.AppendLine($"WHERE id = {entity.Id}");
+					sb.AppendLine($"WHERE id = {entity.id}");
 					break;
 				case SqlStringType.Delete:
 					sb.AppendLine($"DELETE FROM {TableName}");
@@ -85,7 +85,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 			TEntity entity;
 			return _entityType.GetProperties().Select(x =>
 			{
-				if (x.Name == nameof(entity.Id)) // Идентификатор не устанавливаем в INSERT
+				if (x.Name == nameof(entity.id)) // Идентификатор не устанавливаем в INSERT
 				{
 					return null;
 				}
@@ -148,7 +148,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 			return string.Join(", ", values);
 		}
 
-		public async Task<TEntity> GetAsync(TId id)
+		public async Task<TEntity> GetAsync(int id)
 		{
 			var sql = GetBaseSqlString(SqlStringType.Select);
 			var sb = new StringBuilder(sql);
@@ -158,7 +158,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 			{
 				_dbConnection.Open();
 
-				var entity = await _dbConnection.QueryFirstOrDefaultAsync<TEntity>(sb.ToString());
+				var entity = await _dbConnection.GetAsync<TEntity>(id);
 				_dbConnection.Close();
 				return entity;
 			}
@@ -182,8 +182,6 @@ namespace Snt22Progress.DataAccess.Infrastructure
 
 		public async Task<TEntity> AddAsync(TEntity entity)
 		{
-			var sql = GetBaseSqlString(SqlStringType.Insert, entity);
-
 			using (_dbConnection = GetNewConnection())
 			{
 				_dbConnection.Open();
@@ -197,33 +195,36 @@ namespace Snt22Progress.DataAccess.Infrastructure
 
 		public async Task<TEntity> UpdateAsync(TEntity entity)
 		{
-			var sql = GetBaseSqlString(SqlStringType.Update, entity);
-
 			using (_dbConnection = GetNewConnection())
 			{
 				_dbConnection.Open();
 
-				await _dbConnection.ExecuteAsync(sql);
+				var success = await _dbConnection.UpdateAsync(entity);
 				_dbConnection.Close();
 
-				return await GetAsync(entity.Id);
+				return success ? 
+					await GetAsync(entity.id)
+					: entity;
 			}
 		}
 
-		public async Task<bool> DeleteAsync(TId id)
+		public async Task<bool> DeleteAsync(int id)
 		{
-			var sql = GetBaseSqlString(SqlStringType.Delete);
-			var sb = new StringBuilder(sql);
-			sb.AppendLine($"WHERE id = {id}");
+			var entity = await GetAsync(id);
 
+			if (entity == null)
+			{
+				return false;
+			}
+			
 			using (_dbConnection = GetNewConnection())
 			{
 				_dbConnection.Open();
 
-				var res = await _dbConnection.ExecuteAsync(sb.ToString());
+				var success = await _dbConnection.DeleteAsync(entity);
 				_dbConnection.Close();
 
-				return (res > 0);
+				return success;
 			}
 		}
 	}

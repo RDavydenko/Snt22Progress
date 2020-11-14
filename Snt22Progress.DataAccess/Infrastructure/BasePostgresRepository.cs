@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Snt22Progress.DataAccess.Infrastructure
 {
-	public abstract class BasePostgresRepository<TEntity, TId> : BaseSqlRepository<TEntity, TId>
-		where TEntity : class, IBaseEntity<TId>, new()
+	public abstract class BasePostgresRepository<TEntity> : BaseSqlRepository<TEntity>
+		where TEntity : class, IBaseEntity<int>, new()
 	{
 		public BasePostgresRepository(string connection) : base(connection)
 		{
