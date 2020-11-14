@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Web.Net\" />
+    <Folder Include="Web.Api\" />
     <Folder Include="BussinesLogic\" />
   </ItemGroup>
 
