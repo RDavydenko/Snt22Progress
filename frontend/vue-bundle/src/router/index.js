@@ -25,6 +25,13 @@ const routes = [
     }
   },
   {
+    path: '/registration',
+    name: 'Registration',
+    component: function () {
+      return import('../pages/Registration.vue')
+    }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: function () {
@@ -36,6 +43,13 @@ const routes = [
     name: 'Cabinet',
     component: function () {
       return import('../pages/Cabinet.vue')
+    }
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: function () {
+      return import('../pages/ResetPassword.vue')
     }
   },
   {
@@ -60,10 +74,10 @@ const routes = [
     }
   },
   {
-    path: '/legistation',
-    name: 'Legistation',
+    path: '/legislation',
+    name: 'Legislation',
     component: function () {
-      return import('../pages/Legistation.vue')
+      return import('../pages/Legislation.vue')
     }
   },
   {
@@ -71,6 +85,13 @@ const routes = [
     name: 'Debtors',
     component: function () {
       return import('../pages/Debtors.vue')
+    }
+  },
+  {
+    path: '/sales',
+    name: 'Sales',
+    component: function () {
+      return import('../pages/Sales.vue')
     }
   },
   {

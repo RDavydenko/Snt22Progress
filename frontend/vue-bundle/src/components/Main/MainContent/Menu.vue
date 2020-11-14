@@ -76,7 +76,7 @@
                   color: white;
                   padding: 10px 0;
                 "
-                href="/list-sales"
+                to="/sales"
                 ><h4>Объявления о продаже участков</h4></router-link
               >
             </div>
