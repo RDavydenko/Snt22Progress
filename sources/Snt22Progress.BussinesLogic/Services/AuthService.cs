@@ -92,7 +92,8 @@ namespace Snt22Progress.BussinesLogic.Services
 			{
 				var claims = new List<Claim>
 				{
-					new Claim(ClaimsIdentity.DefaultNameClaimType, user.Id.ToString())
+					new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+					new Claim(ClaimTypes.Email, user.Email.ToString())
 				};
 				ClaimsIdentity claimsIdentity =
 				new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
@@ -102,11 +103,6 @@ namespace Snt22Progress.BussinesLogic.Services
 
 			// Если пароль не подошел
 			return null;
-		}
-
-		public Task<ResultResponse> LogoutAsync()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

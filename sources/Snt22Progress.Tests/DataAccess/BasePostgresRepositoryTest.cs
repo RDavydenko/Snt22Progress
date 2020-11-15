@@ -24,6 +24,7 @@ namespace Snt22Progress.Tests.DataAccess
 			IRepository<Choise, int> choisesRepository = new ChoisesRepository(con);
 			IRepository<Document, int> documentsRepository = new DocumentsRepository(con);
 			IRepository<Post, int> postsRepository = new PostsRepository(con);
+			IViewRepository<PostView, int> postViewsRepository = new PostViewsRepository(con);
 			IRepository<Question, int> questionsRepository = new QuestionsRepository(con);
 			IRepository<Role, int> rolesRepository = new RolesRepository(con);
 			IRepository<UserToChoise, int> userToChoisesRepository = new UserToChoisesRepository(con);
@@ -37,6 +38,7 @@ namespace Snt22Progress.Tests.DataAccess
 			await choisesRepository.GetAsync(id);
 			await documentsRepository.GetAsync(id);
 			await postsRepository.GetAsync(id);
+			await postViewsRepository.GetAsync(id);
 			await questionsRepository.GetAsync(id);
 			await rolesRepository.GetAsync(id);
 			await userToChoisesRepository.GetAsync(id);

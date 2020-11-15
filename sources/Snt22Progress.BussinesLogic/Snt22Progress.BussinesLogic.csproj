@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Snt22Progress.Contracts\Snt22Progress.Contracts.csproj" />
     <ProjectReference Include="..\Snt22Progress.DataAccess\Snt22Progress.DataAccess.csproj" />
     <ProjectReference Include="..\Snt22Progress.Logging\Snt22Progress.Logging.csproj" />
   </ItemGroup>

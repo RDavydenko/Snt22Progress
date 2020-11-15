@@ -13,7 +13,5 @@ namespace Snt22Progress.BussinesLogic.Interfaces
 	public interface IAuthService
 	{
 		Task<ResultResponse<JwtAuthorizationDto>> LoginAsync(string login, string password);
-
-		Task<ResultResponse> LogoutAsync();
 	}
 }

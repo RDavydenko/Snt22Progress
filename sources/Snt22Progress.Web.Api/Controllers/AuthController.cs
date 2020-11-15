@@ -16,13 +16,10 @@ namespace Snt22Progress.Web.Api.Controllers
 	[Route("api/auth")]
 	public class AuthController : ControllerBase
 	{
-		private readonly AuthSettings _authSettings;
-
 		private readonly IAuthService _authService;
 
-		public AuthController(AuthSettings authSettings, IAuthService authService)
+		public AuthController(IAuthService authService)
 		{
-			_authSettings = authSettings;
 			_authService = authService;
 		}
 
