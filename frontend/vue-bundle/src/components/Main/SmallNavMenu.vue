@@ -18,6 +18,7 @@
                     class="menu__item"
                     to="/"
                     active-class="active-item"
+                    exact
                     ><svg
                       width="1em"
                       height="1em"

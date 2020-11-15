@@ -100,7 +100,14 @@ const routes = [
     component: function () {
       return import('../pages/Contacts.vue')
     }
-  }
+  },  
+  {
+    path: '/:id',
+    name: 'PostItem',
+    component: function () {
+      return import('../pages/PostItem.vue')
+    }
+  },
 ]
 
 const router = new VueRouter({

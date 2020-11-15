@@ -31,7 +31,8 @@
             ></textarea>
           </div>
         </div>
-      </div>
+      </div>      
+      <button type="submit" class="btn btn-dark btn-sm">Написать</button>
     </form>
   </div>
 </template>

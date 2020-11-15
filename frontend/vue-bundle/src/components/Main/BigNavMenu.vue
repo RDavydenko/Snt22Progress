@@ -15,6 +15,7 @@
                 class="nav-link col-md-12 menu-top-item"
                 active-class="active-item"
                 to="/"
+                exact
               >
                 <svg
                   width="1em"

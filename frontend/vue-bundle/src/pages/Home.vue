@@ -1,13 +1,13 @@
 <template>
-  
+  <Posts />
 </template>
 
 <script>
-export default {
+import Posts from '@/components/Posts/Posts.vue';
 
+export default {
+    components: {
+        Posts
+    }
 }
 </script>
-
-<style>
-
-</style>
