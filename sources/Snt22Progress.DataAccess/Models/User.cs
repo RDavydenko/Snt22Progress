@@ -26,6 +26,8 @@ namespace Snt22Progress.DataAccess.Models
 
 		public string Password_Hash { get; set; }
 
+		public string Salt { get; set; }
+
 		public DateTime Registered { get; set; }
 
 		public bool Is_Banned { get; set; } = false;

@@ -6,13 +6,19 @@
 
   <ItemGroup>
     <Folder Include="Mappers\ConfigurationProfiles\" />
-    <Folder Include="Services\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Infrastructure\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Snt22Progress.DataAccess\Snt22Progress.DataAccess.csproj" />
+    <ProjectReference Include="..\Snt22Progress.Logging\Snt22Progress.Logging.csproj" />
   </ItemGroup>
 
 </Project>

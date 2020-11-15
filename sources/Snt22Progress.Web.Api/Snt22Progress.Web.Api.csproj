@@ -4,5 +4,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Snt22Progress.BussinesLogic\Snt22Progress.BussinesLogic.csproj" />
+    <ProjectReference Include="..\Snt22Progress.Contracts\Snt22Progress.Contracts.csproj" />
+    <ProjectReference Include="..\Snt22Progress.DataAccess\Snt22Progress.DataAccess.csproj" />
+  </ItemGroup>
+
 
 </Project>

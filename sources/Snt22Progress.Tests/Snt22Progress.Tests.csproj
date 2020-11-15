@@ -14,12 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Web.Api\" />
-    <Folder Include="BussinesLogic\" />
+    <ProjectReference Include="..\Snt22Progress.BussinesLogic\Snt22Progress.BussinesLogic.csproj" />
+    <ProjectReference Include="..\Snt22Progress.DataAccess\Snt22Progress.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Snt22Progress.DataAccess\Snt22Progress.DataAccess.csproj" />
+    <Folder Include="Web.Api\" />
   </ItemGroup>
 
 </Project>
