@@ -15,16 +15,19 @@ namespace Snt22Progress.BussinesLogic.Services
 	public class PostsService : IPostsService
 	{
 		private readonly IRepository<Post, int> _postsRepository;
+		private readonly IViewRepository<PostView, int> _postsViewRepository;
 		private readonly IRepository<User, int> _usersRepository;
 		private readonly IProgressLogger _progressLogger;
 		private readonly IMapper _mapper;
 
 		public PostsService(IRepository<Post, int> postsRepository,
+			IViewRepository<PostView, int> postsViewRepository,
 			IRepository<User, int> usersRepository,
 			IProgressLogger progressLogger,
 			IMapper mapper)
 		{
 			_postsRepository = postsRepository;
+			_postsViewRepository = postsViewRepository;
 			_usersRepository = usersRepository;
 			_progressLogger = progressLogger;
 			_mapper = mapper;
@@ -34,7 +37,7 @@ namespace Snt22Progress.BussinesLogic.Services
 		{
 			try
 			{
-				var posts = await _postsRepository.GetAsync();
+				var posts = await _postsViewRepository.GetAsync();
 				var postDtos = _mapper.Map<IEnumerable<PostGetDto>>(posts);
 				return ResultResponse<IEnumerable<PostGetDto>>.GetSuccessResponse(postDtos);
 			}
@@ -49,7 +52,7 @@ namespace Snt22Progress.BussinesLogic.Services
 		{
 			try
 			{
-				var post = await _postsRepository.GetAsync(id);
+				var post = await _postsViewRepository.GetAsync(id);
 				if (post == null)
 				{
 					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.NotFound);
@@ -68,7 +71,23 @@ namespace Snt22Progress.BussinesLogic.Services
 		{
 			try
 			{
-				return ResultResponse<PostGetDto>.GetInternalServerErrorResponse();
+				var creator = await _usersRepository.GetAsync(creatorId);
+				if (creator == null)
+				{
+					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.NotFound, "Пользователь не найден");
+				}
+
+				var post = _mapper.Map<Post>(dto);
+				post.Creator_Id = creatorId;
+				var added = await _postsRepository.AddAsync(post);
+				if (added == null)
+				{
+					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.InternalServerError, "Не удалось добавить пост");
+				}
+				var addedView = await _postsViewRepository.GetAsync(post.Id);
+				var addedViewDto = _mapper.Map<PostGetDto>(addedView);
+
+				return ResultResponse<PostGetDto>.GetSuccessResponse(addedViewDto);
 			}
 			catch (Exception ex)
 			{
@@ -81,7 +100,28 @@ namespace Snt22Progress.BussinesLogic.Services
 		{
 			try
 			{
-				return ResultResponse<PostGetDto>.GetInternalServerErrorResponse();
+				var editor = await _usersRepository.GetAsync(editorId);
+				if (editor == null)
+				{
+					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.NotFound, "Пользователь не найден");
+				}
+
+				var post = await _postsRepository.GetAsync(dto.Id);
+				if (post == null)
+				{
+					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.NotFound, "Не найден пост");
+				}
+				var upd = _mapper.Map<Post>(post);
+				var updated = await _postsRepository.UpdateAsync(upd);
+				if (updated == null)
+				{
+					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.InternalServerError, "Не удалось отредактировать пост");
+				}
+
+				var editedView = await _postsViewRepository.GetAsync(updated.Id);
+				var editedViewDto = _mapper.Map<PostGetDto>(editedView);
+
+				return ResultResponse<PostGetDto>.GetSuccessResponse(editedViewDto);
 			}
 			catch (Exception ex)
 			{
@@ -93,7 +133,9 @@ namespace Snt22Progress.BussinesLogic.Services
 		{
 			try
 			{
-				return ResultResponse.GetInternalServerErrorResponse();
+				var success = await _postsRepository.DeleteAsync(id);
+				var statusCode = success ? StatusCode.OK : StatusCode.NotFound;
+				return new ResultResponse(isSuccess: success, statusCode: statusCode);
 			}
 			catch (Exception ex)
 			{
