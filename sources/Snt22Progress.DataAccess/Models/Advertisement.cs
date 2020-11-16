@@ -7,28 +7,28 @@ namespace Snt22Progress.DataAccess.Models
 {
 	public class Advertisement : IBaseEntity<int>
 	{
-		public int Id { get; set; }
+		public int id { get; set; }
 
-		public string Title { get; set; }
+		public string title { get; set; }
 
-		public string Text { get; set; }
+		public string text { get; set; }
 
-		public decimal Price { get; set; }
+		public decimal price { get; set; }
 
-		public int? Image_File_Id { get; set; }
+		public int? image_file_id { get; set; }
 
-		public bool Is_Privatizated { get; set; } = false;
+		public bool is_privatizated { get; set; } = false;
 
-		public int Square { get; set; }
+		public int square { get; set; }
 
-		public DateTime Created { get; set; }
+		public DateTime created { get; set; }
 
-		public int? Creator_Id { get; set; }
+		public int? creator_id { get; set; }
 
-		public DateTime? Edited { get; set; }
+		public DateTime? edited { get; set; }
 
-		public int? Editor_Id { get; set; }
+		public int? editor_id { get; set; }
 
-		public bool Is_Active { get; set; } = true;
+		public bool is_active { get; set; } = true;
 	}
 }

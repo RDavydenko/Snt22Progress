@@ -7,12 +7,12 @@ namespace Snt22Progress.DataAccess.Models
 {
 	public class Role: IBaseEntity<int>
 	{
-		public int Id { get; set; }
+		public int id { get; set; }
 
-		public string Name { get; set; }
+		public string name { get; set; }
 
-		public DateTime Created { get; set; }
+		public DateTime created { get; set; }
 
-		public int? Creator_Id { get; set; }
+		public int? creator_id { get; set; }
 	}
 }

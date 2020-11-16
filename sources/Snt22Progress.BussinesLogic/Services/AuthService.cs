@@ -87,13 +87,13 @@ namespace Snt22Progress.BussinesLogic.Services
 			{
 				return null;
 			}
-			var passwordHash = await _passwordHashService.GetPasswordHashWithSalt(password, user.Salt);
-			if (passwordHash == user.Password_Hash) // Пароль проходит по хешу
+			var passwordHash = await _passwordHashService.GetPasswordHashWithSalt(password, user.salt);
+			if (passwordHash == user.password_hash) // Пароль проходит по хешу
 			{
 				var claims = new List<Claim>
 				{
-					new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-					new Claim(ClaimTypes.Email, user.Email.ToString())
+					new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),
+					new Claim(ClaimTypes.Email, user.email.ToString())
 				};
 				ClaimsIdentity claimsIdentity =
 				new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,

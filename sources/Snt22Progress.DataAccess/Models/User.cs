@@ -8,28 +8,28 @@ namespace Snt22Progress.DataAccess.Models
 {
 	public class User : IBaseEntity<int>
 	{
-		public int Id { get; set; }
+		public int id { get; set; }
 
-		public string FName { get; set; }
+		public string fname { get; set; }
 
-		public string SName { get; set; }
+		public string sname { get; set; }
 
-		public string MName { get; set; }
+		public string mname { get; set; }
 
-		public int? Age { get; set; }
+		public int? age { get; set; }
 
-		public string Email { get; set; }
+		public string email { get; set; }
 
-		public string Address { get; set; }
+		public string address { get; set; }
 
-		public string Area_Number { get; set; }
+		public string area_number { get; set; }
 
-		public string Password_Hash { get; set; }
+		public string password_hash { get; set; }
 
-		public string Salt { get; set; }
+		public string salt { get; set; }
 
-		public DateTime Registered { get; set; }
+		public DateTime registered { get; set; }
 
-		public bool Is_Banned { get; set; } = false;
+		public bool is_banned { get; set; } = false;
 	}
 }

@@ -7,10 +7,10 @@ namespace Snt22Progress.DataAccess.Models
 {
 	public class ValuePair : IBaseEntity<int>
 	{
-		public int Id { get; set; }
+		public int id { get; set; }
 
-		public string Key { get; set; }
+		public string key { get; set; }
 
-		public string Value { get; set; }
+		public string value { get; set; }
 	}
 }

@@ -76,7 +76,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 				case SqlStringType.Update:
 					sb.AppendLine($"UPDATE {TablePath}");
 					sb.AppendLine($"SET {GetValuesForUpdate(entity)}");
-					sb.AppendLine($"WHERE id = {entity.Id}");
+					sb.AppendLine($"WHERE id = {entity.id}");
 					break;
 				case SqlStringType.Delete:
 					sb.AppendLine($"DELETE FROM {TablePath}");
@@ -95,7 +95,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 			TEntity entity;
 			return _entityType.GetProperties().Select(x =>
 			{
-				if (x.Name == nameof(entity.Id)) // Идентификатор не устанавливаем в INSERT
+				if (x.Name == nameof(entity.id)) // Идентификатор не устанавливаем в INSERT
 				{
 					return null;
 				}
@@ -209,7 +209,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 				_dbConnection.Close();
 
 				return success ? 
-					await GetAsync(entity.Id)
+					await GetAsync(entity.id)
 					: entity;
 			}
 		}

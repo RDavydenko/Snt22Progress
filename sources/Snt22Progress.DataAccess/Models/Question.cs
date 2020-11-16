@@ -7,19 +7,19 @@ namespace Snt22Progress.DataAccess.Models
 {
 	public class Question : IBaseEntity<int>
 	{
-		public int Id { get; set; }
+		public int id { get; set; }
 
-		public string Text { get; set; }
+		public string text { get; set; }
 
-		public DateTime Created { get; set; }
+		public DateTime created { get; set; }
 
-		public int? Creator_Id { get; set; }
+		public int? creator_id { get; set; }
 
-		public DateTime? Edited { get; set; }
+		public DateTime? edited { get; set; }
 
-		public int? Editor_Id { get; set; }
+		public int? editor_id { get; set; }
 
-		public bool Is_Active { get; set; } = true;
+		public bool is_active { get; set; } = true;
 	
 	}
 }

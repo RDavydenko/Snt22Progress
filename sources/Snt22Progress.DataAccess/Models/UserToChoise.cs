@@ -7,10 +7,10 @@ namespace Snt22Progress.DataAccess.Models
 {
 	public class UserToChoise : IBaseEntity<int>
 	{
-		public int Id { get; set; }
+		public int id { get; set; }
 		
-		public int User_Id { get; set; }
+		public int user_id { get; set; }
 
-		public int Choise_Id { get; set; }
+		public int choise_id { get; set; }
 	}
 }

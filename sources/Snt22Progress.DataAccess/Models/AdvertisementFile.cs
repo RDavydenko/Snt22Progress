@@ -7,15 +7,15 @@ namespace Snt22Progress.DataAccess.Models
 {
 	public class AdvertisementFile : IBaseEntity<int>
 	{
-		public int Id { get; set; }
+		public int id { get; set; }
 
-		public string Name { get; set; }
+		public string name { get; set; }
 
-		public string Path { get; set; }
+		public string path { get; set; }
 
-		public int Length { get; set; }		
+		public int length { get; set; }		
 
-		public DateTime Uploaded { get; set; }
+		public DateTime uploaded { get; set; }
 
 		public int? Uploader_Id { get; set; }
 	}

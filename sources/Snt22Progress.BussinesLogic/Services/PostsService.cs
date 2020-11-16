@@ -78,14 +78,14 @@ namespace Snt22Progress.BussinesLogic.Services
 				}
 
 				var post = _mapper.Map<Post>(dto);
-				post.Creator_Id = creatorId;
-				post.Created = DateTime.Now;
+				post.creator_id = creatorId;
+				post.created = DateTime.Now;
 				var added = await _postsRepository.AddAsync(post);
 				if (added == null)
 				{
 					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.InternalServerError, "Не удалось добавить пост");
 				}
-				var addedView = await _postsViewRepository.GetAsync(post.Id);
+				var addedView = await _postsViewRepository.GetAsync(post.id);
 				var addedViewDto = _mapper.Map<PostGetDto>(addedView);
 
 				return ResultResponse<PostGetDto>.GetSuccessResponse(addedViewDto);
@@ -113,10 +113,10 @@ namespace Snt22Progress.BussinesLogic.Services
 					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.NotFound, "Не найден пост");
 				}
 
-				post.Text = dto.Text;
-				post.Title = dto.Title;
-				post.Edited = DateTime.Now;
-				post.Editor_Id = editor.Id;
+				post.text = dto.Text;
+				post.title = dto.Title;
+				post.edited = DateTime.Now;
+				post.editor_id = editor.id;
 
 				var updated = await _postsRepository.UpdateAsync(post);
 				if (updated == null)
@@ -124,7 +124,7 @@ namespace Snt22Progress.BussinesLogic.Services
 					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.InternalServerError, "Не удалось отредактировать пост");
 				}
 
-				var editedView = await _postsViewRepository.GetAsync(updated.Id);
+				var editedView = await _postsViewRepository.GetAsync(updated.id);
 				var editedViewDto = _mapper.Map<PostGetDto>(editedView);
 
 				return ResultResponse<PostGetDto>.GetSuccessResponse(editedViewDto);
