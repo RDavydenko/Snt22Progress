@@ -54,7 +54,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		[HttpPost("add")]
 		public async Task<ResultResponse<PostGetDto>> AddPost([FromBody] PostCreateDto dto)
 		{
-			if (dto != null && !ModelState.IsValid)
+			if (dto == null || !ModelState.IsValid)
 			{
 				return ResultResponse<PostGetDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
 			}
@@ -69,9 +69,9 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// <returns></returns>
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpPost("{id}/edit")]
-		public async Task<ResultResponse<PostGetDto>> EditPost([FromQuery] int id, [FromBody] PostEditDto dto)
+		public async Task<ResultResponse<PostGetDto>> EditPost([FromRoute] int id, [FromBody] PostEditDto dto)
 		{
-			if (dto != null && !ModelState.IsValid)
+			if (dto == null || !ModelState.IsValid)
 			{
 				return ResultResponse<PostGetDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
 			}
@@ -85,7 +85,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// <returns></returns>
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpPost("{id}/delete")]
-		public async Task<ResultResponse> DeletePost([FromQuery] int id)
+		public async Task<ResultResponse> DeletePost([FromRoute] int id)
 		{
 			if (!ModelState.IsValid)
 			{
