@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Snt22Progress.DataAccess\Snt22Progress.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
