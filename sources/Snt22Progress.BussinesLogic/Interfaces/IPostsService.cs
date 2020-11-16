@@ -18,7 +18,7 @@ namespace Snt22Progress.BussinesLogic.Interfaces
 
 		Task<ResultResponse<PostGetDto>> CreatePostAsync(PostCreateDto dto, int authorId);
 
-		Task<ResultResponse<PostGetDto>> UpdatePostAsync(PostEditDto dto, int editorId);
+		Task<ResultResponse<PostGetDto>> UpdatePostAsync(int postId, PostEditDto dto, int editorId);
 
 		Task<ResultResponse> DeletePostAsync(int id);		
 	}

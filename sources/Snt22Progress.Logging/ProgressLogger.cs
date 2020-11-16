@@ -16,7 +16,7 @@ namespace Snt22Progress.Logging
 
 		protected readonly ILogger _logger;
 
-		public string DirectoryPath => Path.Combine(Directory.GetCurrentDirectory(), _folderName);
+		public string DirectoryPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _folderName);
 
 		public ProgressLogger(string folderName = "logs")
 		{
@@ -24,7 +24,8 @@ namespace Snt22Progress.Logging
 
 			var configuration = new LoggerConfiguration();
 			configuration.WriteTo.File(
-				path: DirectoryPath				
+				path: Path.Combine(DirectoryPath, "log" + ".log"),
+				rollingInterval: RollingInterval.Day
 				);
 
 			_logger = configuration.CreateLogger();

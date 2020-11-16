@@ -79,6 +79,7 @@ namespace Snt22Progress.BussinesLogic.Services
 
 				var post = _mapper.Map<Post>(dto);
 				post.Creator_Id = creatorId;
+				post.Created = DateTime.Now;
 				var added = await _postsRepository.AddAsync(post);
 				if (added == null)
 				{
@@ -96,7 +97,7 @@ namespace Snt22Progress.BussinesLogic.Services
 			}
 		}
 
-		public async Task<ResultResponse<PostGetDto>> UpdatePostAsync(PostEditDto dto, int editorId)
+		public async Task<ResultResponse<PostGetDto>> UpdatePostAsync(int postId, PostEditDto dto, int editorId)
 		{
 			try
 			{
@@ -106,7 +107,7 @@ namespace Snt22Progress.BussinesLogic.Services
 					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.NotFound, "Пользователь не найден");
 				}
 
-				var post = await _postsRepository.GetAsync(dto.Id);
+				var post = await _postsRepository.GetAsync(postId);
 				if (post == null)
 				{
 					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.NotFound, "Не найден пост");

@@ -13,25 +13,30 @@ namespace Snt22Progress.Web.Api.Controllers
 	[Produces("application/json")]
 	public class BaseApiController : ControllerBase
 	{
-		public int? UserId { get; set; }
+		public int? UserId
+		{
+			get
+			{
+				var claim = (ClaimsIdentity)User?.Identity;
+				var userId = claim?.Claims?.Where(x => x.Type == ClaimTypes.NameIdentifier)?.FirstOrDefault()?.Value;
+				return userId != null ?
+					int.Parse(userId)
+					: (int?)null;
+			}
+		}
 
-		public string UserEmail { get; set; }
+		public string UserEmail
+		{
+			get
+			{
+				var claim = (ClaimsIdentity)User?.Identity;
+				var userEmail = claim?.Claims?.Where(x => x.Type == ClaimTypes.Email)?.FirstOrDefault()?.Value;
+				return userEmail;
+			}
+		}
 
 		public BaseApiController()
 		{
-			if (User?.Identity?.IsAuthenticated == true)
-			{
-				var id = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? null;
-				if (id != null)
-				{
-					UserId = int.Parse(id);
-				}
-				var email = User?.FindFirst(ClaimTypes.Email)?.Value ?? null;
-				if (email != null)
-				{
-					UserEmail = email;
-				}
-			}
 		}
 	}
 }

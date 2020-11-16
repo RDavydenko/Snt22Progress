@@ -87,7 +87,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 
 		private string[] GetAllFieldNames()
 		{
-			return _entityType.GetProperties().Select(x => x.Name).ToArray();
+			return _entityType.GetProperties().Select(x => x.Name.ToLower()).ToArray();
 		}
 
 		private string[] GetAllNoPkFieldNames()
@@ -101,7 +101,7 @@ namespace Snt22Progress.DataAccess.Infrastructure
 				}
 				else
 				{
-					return x.Name;
+					return x.Name.ToLower();
 				}
 			}).Where(x => x != null).ToArray();
 		}

@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Snt22Progress.BussinesLogic;
 using Snt22Progress.BussinesLogic.Interfaces;
 using Snt22Progress.BussinesLogic.Services;
@@ -86,6 +87,12 @@ namespace Snt22Progress.Web.Api
 			services.AddTransient<IMapper>(f => (new MapperConfiguration(cfg => cfg.AddMaps(new Assembly[] { BussinesLogicAssembly.Assembly }))).CreateMapper());
 
 			services.AddControllers();
+
+			// Ñגאדדונ
+			services.AddSwaggerGen(c =>
+			{
+				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Snt 22 Progress API", Version = "v1" });
+			});
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -98,6 +105,12 @@ namespace Snt22Progress.Web.Api
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+
+			app.UseSwagger();
+			app.UseSwaggerUI(opt =>
+			{
+				opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Snt 22 Progress API");
+			});
 
 			app.UseAuthentication();
 			app.UseAuthorization();
