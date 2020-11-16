@@ -44,7 +44,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// </summary>
 		/// <param name="dto">Информация о пользователе</param>
 		/// <returns></returns>
-		[Authorize(JwtBearerDefaults.AuthenticationScheme)]
+		[Authorize]
 		[HttpPost("edit")]
 		public async Task<ResultResponse<UserDto>> Edit(UserEditDto dto)
 		{
@@ -55,7 +55,7 @@ namespace Snt22Progress.Web.Api.Controllers
 			return await _usersService.EditAsync(UserId.Value, dto);
 		}
 
-		[Authorize(JwtBearerDefaults.AuthenticationScheme)]
+		[Authorize]
 		[HttpPost("change-password")]
 		public async Task<ResultResponse> ChangePassword(ChangePasswordDto dto)
 		{

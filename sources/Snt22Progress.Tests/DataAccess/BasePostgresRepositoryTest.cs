@@ -23,6 +23,7 @@ namespace Snt22Progress.Tests.DataAccess
 			IRepository<AdvertisementFile, int> advertisementFilesRepository = new AdvertisementFilesRepository(con);
 			IRepository<Choise, int> choisesRepository = new ChoisesRepository(con);
 			IRepository<Document, int> documentsRepository = new DocumentsRepository(con);
+			IViewRepository<DocumentView, int> documentViewsRepository = new DocumentViewsRepository(con);
 			IRepository<Post, int> postsRepository = new PostsRepository(con);
 			IViewRepository<PostView, int> postViewsRepository = new PostViewsRepository(con);
 			IRepository<Question, int> questionsRepository = new QuestionsRepository(con);
@@ -37,6 +38,7 @@ namespace Snt22Progress.Tests.DataAccess
 			await advertisementFilesRepository.GetAsync(id);
 			await choisesRepository.GetAsync(id);
 			await documentsRepository.GetAsync(id);
+			await documentViewsRepository.GetAsync(id);
 			await postsRepository.GetAsync(id);
 			await postViewsRepository.GetAsync(id);
 			await questionsRepository.GetAsync(id);

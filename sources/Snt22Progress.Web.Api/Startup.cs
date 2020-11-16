@@ -61,6 +61,15 @@ namespace Snt22Progress.Web.Api
 
 			var dbConnection = Configuration.GetSection("ConnectionStrings")?.GetSection("DefaultPostgres")?.Value;
 
+			// Сервис для безболезненного проброса всяких констант (к примеру из appsettings)
+			services.AddTransient<ConfigurationService>(f =>
+			{
+				return new ConfigurationService(new BussinesLogic.Models.UploadedFilesSettings(
+						documentsFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("DocumentsFilesFolderRelativePath")?.Value,
+						advertisementFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("AdvertisementFilesFolderRelativePath")?.Value
+					));
+			});
+
 			// Репозитории (таблицы)
 			services.AddTransient<IRepository<User, int>, UsersRepository>(f => new UsersRepository(dbConnection));
 			services.AddTransient<IRepository<Role, int>, RolesRepository>(f => new RolesRepository(dbConnection));
@@ -76,12 +85,15 @@ namespace Snt22Progress.Web.Api
 
 			// Репозитории (представления)
 			services.AddTransient<IViewRepository<PostView, int>, PostViewsRepository>(f => new PostViewsRepository(dbConnection));
+			services.AddTransient<IViewRepository<DocumentView, int>, DocumentViewsRepository>(f => new DocumentViewsRepository(dbConnection));
 
 			// Сервисы
 			services.AddTransient<IAuthService, AuthService>();
 			services.AddTransient<IPasswordHashService, PasswordHashService>();
 			services.AddTransient<IProgressLogger, ProgressLogger>();
 			services.AddTransient<IPostsService, PostsService>();
+			services.AddTransient<IUsersService, UsersService>();
+			services.AddTransient<IDocumentsService, DocumentsService>();
 
 			// Маппер
 			services.AddTransient<IMapper>(f => (new MapperConfiguration(cfg => cfg.AddMaps(new Assembly[] { BussinesLogicAssembly.Assembly }))).CreateMapper());

@@ -50,7 +50,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// </summary>
 		/// <param name="dto">Пост</param>
 		/// <returns></returns>
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[Authorize(Roles = "Admin")]
 		[HttpPost("add")]
 		public async Task<ResultResponse<PostGetDto>> AddPost([FromBody] PostCreateDto dto)
 		{
@@ -67,7 +67,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// <param name="id">Идентификатор</param>
 		/// <param name="dto">Пост</param>
 		/// <returns></returns>
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[Authorize(Roles = "Admin")]
 		[HttpPost("{id}/edit")]
 		public async Task<ResultResponse<PostGetDto>> EditPost([FromRoute] int id, [FromBody] PostEditDto dto)
 		{
@@ -83,7 +83,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор поста</param>
 		/// <returns></returns>
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[Authorize(Roles = "Admin")]
 		[HttpPost("{id}/delete")]
 		public async Task<ResultResponse> DeletePost([FromRoute] int id)
 		{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -32,7 +33,7 @@ namespace Snt22Progress.BussinesLogic.Services
 		{
 			try
 			{
-				var user = await _userRepository.GetAsync($"where lower(email) = lower('{dto.Email}')");
+				var user = (await _userRepository.GetAsync($"where lower(email) = lower('{dto.Email}')")).FirstOrDefault();
 				if (user != null)
 				{
 					return ResultResponse.GetBadResponse(StatusCode.BadRequest, "Пользователь с таким Email уже зарегистрирован");
@@ -43,7 +44,7 @@ namespace Snt22Progress.BussinesLogic.Services
 				newUser.salt = GenerateSalt();
 				newUser.password_hash = await _passwordHashService.GetPasswordHashWithSalt(dto.Password, newUser.salt);
 
-				var added = _userRepository.AddAsync(newUser);
+				var added = await _userRepository.AddAsync(newUser);
 				if (added != null)
 				{
 					return ResultResponse.GetSuccessResponse();

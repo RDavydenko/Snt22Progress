@@ -16,7 +16,6 @@ namespace Snt22Progress.DataAccess.Models
 		public DateTime created { get; set; }
 
 		public int? creator_id { get; set; }
-
 		public string creator_fname { get; set; }
 		public string creator_sname { get; set; }
 		public string creator_mname { get; set; }
