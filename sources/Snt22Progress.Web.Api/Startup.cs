@@ -1,7 +1,9 @@
-	using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Snt22Progress.BussinesLogic;
 using Snt22Progress.BussinesLogic.Interfaces;
 using Snt22Progress.BussinesLogic.Services;
 using Snt22Progress.DataAccess.Infrastructure;
@@ -57,22 +60,30 @@ namespace Snt22Progress.Web.Api
 
 			var dbConnection = Configuration.GetSection("ConnectionStrings")?.GetSection("DefaultPostgres")?.Value;
 
-			// Репозитории
+			// Репозитории (таблицы)
 			services.AddTransient<IRepository<User, int>, UsersRepository>(f => new UsersRepository(dbConnection));
 			services.AddTransient<IRepository<Role, int>, RolesRepository>(f => new RolesRepository(dbConnection));
 			services.AddTransient<IRepository<Advertisement, int>, AdvertisementsRepository>(f => new AdvertisementsRepository(dbConnection));
 			services.AddTransient<IRepository<AdvertisementFile, int>, AdvertisementFilesRepository>(f => new AdvertisementFilesRepository(dbConnection));
 			services.AddTransient<IRepository<Choise, int>, ChoisesRepository>(f => new ChoisesRepository(dbConnection));
+			services.AddTransient<IRepository<Post, int>, PostsRepository>(f => new PostsRepository(dbConnection));
 			services.AddTransient<IRepository<Document, int>, DocumentsRepository>(f => new DocumentsRepository(dbConnection));
 			services.AddTransient<IRepository<Question, int>, QuestionsRepository>(f => new QuestionsRepository(dbConnection));
 			services.AddTransient<IRepository<UserToChoise, int>, UserToChoisesRepository>(f => new UserToChoisesRepository(dbConnection));
 			services.AddTransient<IRepository<UserToRole, int>, UserToRolesRepository>(f => new UserToRolesRepository(dbConnection));
 			services.AddTransient<IRepository<ValuePair, int>, ValuePairsRepository>(f => new ValuePairsRepository(dbConnection));
 
+			// Репозитории (представления)
+			services.AddTransient<IViewRepository<PostView, int>, PostViewsRepository>(f => new PostViewsRepository(dbConnection));
+
 			// Сервисы
 			services.AddTransient<IAuthService, AuthService>();
 			services.AddTransient<IPasswordHashService, PasswordHashService>();
 			services.AddTransient<IProgressLogger, ProgressLogger>();
+			services.AddTransient<IPostsService, PostsService>();
+
+			// Маппер
+			services.AddTransient<IMapper>(f => (new MapperConfiguration(cfg => cfg.AddMaps(new Assembly[] { BussinesLogicAssembly.Assembly }))).CreateMapper());
 
 			services.AddControllers();
 		}

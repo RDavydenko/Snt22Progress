@@ -111,8 +111,13 @@ namespace Snt22Progress.BussinesLogic.Services
 				{
 					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.NotFound, "Не найден пост");
 				}
-				var upd = _mapper.Map<Post>(post);
-				var updated = await _postsRepository.UpdateAsync(upd);
+
+				post.Text = dto.Text;
+				post.Title = dto.Title;
+				post.Edited = DateTime.Now;
+				post.Editor_Id = editor.Id;
+
+				var updated = await _postsRepository.UpdateAsync(post);
 				if (updated == null)
 				{
 					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.InternalServerError, "Не удалось отредактировать пост");

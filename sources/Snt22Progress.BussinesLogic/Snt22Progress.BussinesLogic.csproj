@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mappers\ConfigurationProfiles\" />
     <Folder Include="Infrastructure\" />
   </ItemGroup>
 
