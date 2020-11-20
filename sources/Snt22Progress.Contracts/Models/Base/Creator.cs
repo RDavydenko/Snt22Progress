@@ -11,7 +11,7 @@ namespace Snt22Progress.Contracts.Models.Base
 
 		public string FName { get; set; }
 
-		public string SName { get; set; }
+		public string LName { get; set; }
 
 		public string MName { get; set; }
 	}

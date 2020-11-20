@@ -7,11 +7,11 @@ namespace Snt22Progress.BussinesLogic.Mappers
 {
 	public static class MapperHelper
 	{
-		public static Creator InitCreator(int? id, string fname, string sname, string mname)
+		public static Creator InitCreator(int? id, string fname, string lname, string mname)
 		{
 			if (id.HasValue)
 			{
-				return new Creator { Id = id.Value, FName = fname, SName = sname, MName = mname };
+				return new Creator { Id = id.Value, FName = fname, LName = lname, MName = mname };
 			}
 			else
 			{
@@ -19,11 +19,11 @@ namespace Snt22Progress.BussinesLogic.Mappers
 			}
 		}
 
-		public static Editor InitEditor(int? id, string fname, string sname, string mname)
+		public static Editor InitEditor(int? id, string fname, string lname, string mname)
 		{
 			if (id.HasValue)
 			{
-				return new Editor { Id = id.Value, FName = fname, SName = sname, MName = mname };
+				return new Editor { Id = id.Value, FName = fname, LName = lname, MName = mname };
 			}
 			else
 			{

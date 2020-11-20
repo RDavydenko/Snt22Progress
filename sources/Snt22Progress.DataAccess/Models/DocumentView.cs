@@ -20,7 +20,7 @@ namespace Snt22Progress.DataAccess.Models
 
 		public int? creator_id { get; set; }
 		public string creator_fname { get; set; }
-		public string creator_sname { get; set; }
+		public string creator_lname { get; set; }
 		public string creator_mname { get; set; }
 
 

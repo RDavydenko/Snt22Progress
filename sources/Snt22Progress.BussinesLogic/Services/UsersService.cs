@@ -71,8 +71,8 @@ namespace Snt22Progress.BussinesLogic.Services
 				}
 
 				user.fname = dto.FName;
-				user.sname = dto.SName;
-				user.mname = dto.MName;
+				user.lname = dto.SName;
+				user.mname = dto.LName;
 				user.age = dto.Age;
 				user.address = dto.Address;
 				user.area_number = dto.AreaNumber;

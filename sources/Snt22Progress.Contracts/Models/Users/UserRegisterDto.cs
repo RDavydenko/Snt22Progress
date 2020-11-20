@@ -11,7 +11,7 @@ namespace Snt22Progress.Contracts.Models.Users
 		public string FName { get; set; }
 
 		[Required]
-		public string SName { get; set; }
+		public string LName { get; set; }
 
 		[Required]
 		public string AreaNumber { get; set; }

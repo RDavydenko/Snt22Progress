@@ -11,7 +11,7 @@ namespace Snt22Progress.Contracts.Models.Users
 
 		public string FNname { get; set; }
 
-		public string SNname { get; set; }
+		public string LNname { get; set; }
 
 		public string MName { get; set; }
 

@@ -12,7 +12,7 @@ namespace Snt22Progress.DataAccess.Models
 
 		public string fname { get; set; }
 
-		public string sname { get; set; }
+		public string lname { get; set; }
 
 		public string mname { get; set; }
 
