@@ -31,5 +31,7 @@ namespace Snt22Progress.DataAccess.Models
 		public DateTime registered { get; set; }
 
 		public bool is_banned { get; set; } = false;
+
+		public bool is_government_member { get; set; } = false;
 	}
 }
