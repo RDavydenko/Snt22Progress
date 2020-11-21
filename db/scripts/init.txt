@@ -1,0 +1,134 @@
+CREATE TABLE progress.users
+(
+	id SERIAL PRIMARY KEY,
+	fname VARCHAR(20) NOT NULL,
+	lname VARCHAR(50) NOT NULL,
+	mname VARCHAR(30) NULL,
+	age INT NULL,
+	email VARCHAR(30) NULL,
+	address VARCHAR(100) NULL,
+	area_number VARCHAR(10) NOT NULL,
+	password_hash TEXT NOT NULL,
+	salt TEXT NOT NULL,
+	
+	registered TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP,
+	is_banned BOOL NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE progress.roles
+(
+	Id SERIAL PRIMARY KEY,
+	Name VARCHAR(30) NOT NULL,
+	
+	created TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
+	creator_id INT NOT NULL REFERENCES progress.users (id) ON DELETE NO ACTION
+);
+
+CREATE TABLE progress.usertoroles 
+(
+	id SERIAL PRIMARY KEY,
+	user_id INT NOT NULL REFERENCES progress.users (id) ON DELETE CASCADE,	
+	role_id INT NOT NULL REFERENCES progress.roles (id) ON DELETE CASCADE,	
+	
+	created TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
+	creator_id INT NOT NULL REFERENCES progress.users (id) ON DELETE NO ACTION	
+);
+
+CREATE TABLE progress.valuepairs
+(
+	id SERIAL PRIMARY KEY,
+	key TEXT NOT NULL UNIQUE,
+	value TEXT NOT NULL
+);
+
+CREATE TABLE progress.posts 
+(
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(120) NOT NULL,
+	text VARCHAR(10000) NOT NULL,
+	
+	created TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
+	creator_id INT NOT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
+	edited TIMESTAMP NULL,
+	editor_id INT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
+	
+	is_active BOOL NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE progress.documents
+(
+	id SERIAL PRIMARY KEY,
+	
+	name TEXT NOT NULL,
+	native_name TEXT NOT NULL,
+	path TEXT NOT NULL,
+	length INT NOT NULL,
+	
+	created TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
+	creator_id INT NOT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
+	edited TIMESTAMP NULL,
+	editor_id INT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
+	
+	is_active BOOL NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE progress.questions
+(
+	id SERIAL PRIMARY KEY,
+	text TEXT NOT NULL,
+	
+	created TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
+	creator_id INT NOT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
+	edited TIMESTAMP NULL,
+	editor_id INT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
+	
+	is_active BOOL NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE progress.choises
+(
+	id SERIAL PRIMARY KEY,
+	question_id INT REFERENCES progress.questions (id) ON DELETE CASCADE,
+	text TEXT NOT NULL,
+	votes_count INT NOT NULL DEFAULT 0,
+	
+	created TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
+	creator_id INT NOT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
+	edited TIMESTAMP NULL,
+	editor_id INT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
+	is_active BOOL NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE progress.usertochoises
+(
+	id SERIAL PRIMARY KEY,
+	user_id INT NOT NULL REFERENCES progress.users (id) ON DELETE CASCADE,
+	choise_id INT NOT NULL REFERENCES progress.choises (id) ON DELETE CASCADE
+);
+
+CREATE TABLE progress.advertisementfiles
+(
+	id SERIAL PRIMARY KEY,
+	name TEXT NOT NULL,
+	native_name TEXT NOT NULL,
+	path TEXT NOT NULL,
+	length INT NOT NULL,
+	
+	uploaded TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
+	uploader_id INT NOT NULL REFERENCES progress.users (id) ON DELETE NO ACTION
+);
+
+CREATE TABLE progress.advertisements
+(
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(70) NOT NULL,
+	text TEXT NULL,
+	price MONEY NOT NULL,
+	image_file_id INT NULL REFERENCES progress.advertisementfiles (id) ON DELETE SET NULL,
+	is_privatizated BOOL NOT NULL DEFAULT FALSE,
+	square INT NOT NULL,
+	
+	created TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
+	creator_id INT NOT NULL REFERENCES progress.users (id) ON DELETE CASCADE,
+	is_active BOOL NOT NULL DEFAULT TRUE 
+);

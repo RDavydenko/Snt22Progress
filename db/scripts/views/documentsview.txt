@@ -1,0 +1,6 @@
+CREATE VIEW progress.documentsview AS
+SELECT doc.*, cr.fname AS creator_fname, cr.lname AS creator_lname, cr.mname AS creator_mname, 
+ed.fname AS editor_fname, ed.lname AS editor_lname, ed.mname AS editor_mname
+FROM progress.documents AS doc
+LEFT JOIN progress.users AS cr ON cr.id = doc.creator_id
+LEFT JOIN progress.users AS ed ON ed.id = doc.editor_id

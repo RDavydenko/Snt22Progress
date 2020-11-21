@@ -1,0 +1,6 @@
+CREATE VIEW progress.postsview AS
+SELECT p.*, cr.fname AS creator_fname, cr.lname AS creator_lname, cr.mname AS creator_mname,
+ed.fname AS editor_fname, ed.lname AS editor_lname, ed.mname AS editor_mname
+FROM progress.posts p
+LEFT JOIN progress.users cr ON p.creator_id = cr.id
+LEFT JOIN progress.users ed ON p.editor_id = ed.id;
