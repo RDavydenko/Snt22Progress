@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Snt22Progress.Contracts.Infrastructure;
-using Snt22Progress.Contracts.Models.Base;
 
-namespace Snt22Progress.Contracts.Models.Documents
+namespace Snt22Progress.Contracts.Models.Advertisements
 {
-	public class DocumentDto : IDto<int>
+	/// <summary>
+	/// ДТО файла объявления о продаже участка
+	/// </summary>
+	public class AdvertisementFileDto : IDto<int>
 	{
 		public int Id { get; set; }
 
@@ -18,8 +20,8 @@ namespace Snt22Progress.Contracts.Models.Documents
 
 		public int Length { get; set; }
 
-		public Creator Creator { get; set; }
+		public DateTime Uploaded { get; set; }
 
-		public Editor Editor { get; set; }
+		public int? UploaderId { get; set; }
 	}
 }
