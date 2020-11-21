@@ -37,6 +37,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// </summary>
 		/// <param name="userId">Идентификатор пользователя</param>
 		/// <returns></returns>
+		[Authorize]
 		[HttpPost("add")]
 		public async Task<ResultResponse> AddMember([FromBody] int userId)
 		{
@@ -52,6 +53,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// </summary>
 		/// <param name="userId">Идентификатор пользователя</param>
 		/// <returns></returns>
+		[Authorize]
 		[HttpPost("delete")]
 		public async Task<ResultResponse> DeleteMember([FromBody] int userId)
 		{

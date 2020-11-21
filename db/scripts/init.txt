@@ -133,3 +133,13 @@ CREATE TABLE progress.advertisements
 	creator_id INT NOT NULL REFERENCES progress.users (id) ON DELETE CASCADE,
 	is_active BOOL NOT NULL DEFAULT TRUE 
 );
+
+CREATE TABLE progress.legislations
+(
+    	id SERIAL PRIMARY KEY,
+	text VARCHAR(300) NOT NULL,
+	url TEXT NOT NULL,
+	created TIMESTAMP NOT NULL DEFAULT (now())::TIMESTAMP,
+   	creator_id INT NULL REFERENCES progress.users (id) ON DELETE SET NULL,
+    	is_active BOOL NOT NULL DEFAULT TRUE
+);
