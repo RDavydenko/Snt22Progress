@@ -54,15 +54,15 @@ namespace Snt22Progress.Web.Api.Controllers
 		[HttpPost("add")]
 		public async Task<ResultResponse<DocumentDto>> AddDocument([FromForm] DocumentCreateDto dto)
 		{
-			if (await IsInRole(Roles.Admin, Roles.Moderator))
+			if (await IsInRole(Roles.Admin))
 			{
 				if (dto != null && ModelState.IsValid)
 				{
 					if (dto.File == null)
 					{
-						if (Request.HasFormContentType && Request?.Form?.Files?.Count != 0)
+						if (Request?.HasFormContentType == true && Request?.Form?.Files?.Count != 0)
 						{
-							dto = new DocumentCreateDto { File = Request.Form.Files[0] };
+							dto.File = Request.Form.Files[0];
 						}
 					}
 					if (dto.File == null)
@@ -88,7 +88,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		[HttpPost("{id}/delete")]
 		public async Task<ResultResponse> RemoveDocument([FromRoute] int id)
 		{
-			if (await IsInRole(Roles.Admin, Roles.Moderator))
+			if (await IsInRole(Roles.Admin))
 			{
 				return await _documentsService.RemoveDocumentAsync(id);
 			}

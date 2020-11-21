@@ -10,6 +10,7 @@ using Snt22Progress.BussinesLogic.Models;
 using Snt22Progress.Contracts.Models.Documents;
 using Snt22Progress.DataAccess.Infrastructure;
 using Snt22Progress.DataAccess.Models;
+using Snt22Progress.FileManager.Infrasructure;
 using Snt22Progress.Logging;
 
 namespace Snt22Progress.BussinesLogic.Services
@@ -21,8 +22,7 @@ namespace Snt22Progress.BussinesLogic.Services
 		private readonly ConfigurationService _configurationService;
 		private readonly IRepository<User, int> _usersRepository;
 		private readonly IProgressLogger _progressLogger;
-		private readonly IMapper _mapper;
-		private string _absolutePath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _configurationService.UploadedFilesSettings.DocumentsFilesFolderRelativePath);
+		private readonly IMapper _mapper;		
 
 		public DocumentsService(IRepository<Document, int> documentsRepository,
 			IProgressLogger progressLogger,
@@ -83,53 +83,44 @@ namespace Snt22Progress.BussinesLogic.Services
 					return ResultResponse<DocumentDto>.GetBadResponse(StatusCode.NotFound, "Не найден пользователь");
 				}
 
-				if (dto.File.FileName.Contains("\\") || dto.File.FileName.Contains("/"))
-				{
-					return ResultResponse<DocumentDto>.GetBadResponse(StatusCode.BadRequest, "Названия файлов не должны содержать слешей (/ и \\)");
-				}
-				var splitted = dto.File.FileName.Split('.');
-				var fileExtension = splitted.Length > 0 ? splitted[splitted.Length - 1] : null;
-				var allowedExtensions = new string[] { "png", "jpg", "gif", "jpeg", "bmp" };
-				if (allowedExtensions.Any(x => x == fileExtension) == false)
-				{
-					return ResultResponse<DocumentDto>.GetBadResponse(StatusCode.BadRequest, $"Можно отправлять только картинки. Доступные расширения файлов: {string.Join(", ", allowedExtensions)}");
-				}
-
-				if (Directory.Exists(_absolutePath) == false)
-				{
-					Directory.CreateDirectory(_absolutePath);
-				}
-
-				var hypotheticalFileName = Path.Combine(_absolutePath, dto.File.FileName);
-				string realUniqueFilePath;
-				if (File.Exists(hypotheticalFileName))
-				{
-					realUniqueFilePath = Path.Combine(_absolutePath, DateTime.Now.ToString("yyyy-MM-dd_mm-ss-fff") + "_" + dto.File.FileName);
-				}
-				else
-				{
-					realUniqueFilePath = hypotheticalFileName;
-				}
-
 				byte[] bytes = new byte[dto.File.Length];
 				using (var stream = dto.File.OpenReadStream())
 				{
 					await stream.ReadAsync(bytes, 0, (int)dto.File.Length);
 				}
-				await File.WriteAllBytesAsync(realUniqueFilePath, bytes);
+				var fileManager = new FileManager.Infrasructure.FileManager(
+					folder: _configurationService.UploadedFilesSettings.DocumentsFilesFolderRelativePath,
+					progressLogger: _progressLogger);
+				var uploadingResult = await fileManager.UploadFileAsync(new FileDto(dto.File.FileName, bytes),
+					new string[] { "png", "jpg", "gif", "jpeg", "bmp" });
 
-				var document = await _documentsRepository.AddAsync(new Document
+				if (uploadingResult.IsSuccess)
 				{
-					length = (int)dto.File.Length,
-					name = dto.Name,
-					native_name = dto.File.FileName,
-					path = realUniqueFilePath,
-					created = DateTime.Now,
-					creator_id = userId,
-				});
-				var documentView = await _documentViewsRepository.GetAsync(document.id);
-				var documentDto = _mapper.Map<DocumentDto>(documentView);
-				return ResultResponse<DocumentDto>.GetSuccessResponse(documentDto);
+					var document = await _documentsRepository.AddAsync(new Document
+					{
+						length = (int)dto.File.Length,
+						name = dto.Name,
+						native_name = dto.File.FileName,
+						path = uploadingResult.FilePath,
+						created = DateTime.Now,
+						creator_id = userId,
+					});
+
+					if (document != null)
+					{
+						var documentView = await _documentViewsRepository.GetAsync(document.id);
+						var documentDto = _mapper.Map<DocumentDto>(documentView);
+						return ResultResponse<DocumentDto>.GetSuccessResponse(documentDto);
+					}
+					else
+					{
+						return ResultResponse<DocumentDto>.GetInternalServerErrorResponse();
+					}
+				}
+				else
+				{
+					return ResultResponse<DocumentDto>.GetInternalServerErrorResponse(uploadingResult.ErrorDescription);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -158,7 +149,6 @@ namespace Snt22Progress.BussinesLogic.Services
 				{
 					return ResultResponse.GetInternalServerErrorResponse();
 				}
-
 			}
 			catch (Exception ex)
 			{

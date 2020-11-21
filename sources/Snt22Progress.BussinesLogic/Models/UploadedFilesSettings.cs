@@ -8,11 +8,15 @@ namespace Snt22Progress.BussinesLogic.Models
 	{
 		public string DocumentsFilesFolderRelativePath { get; }
 		public string AdvertisementFilesFolderRelativePath { get; }
+		public string DebtorFilesFolderRelativePath { get; }
 
-		public UploadedFilesSettings(string documentsFilesFolderRelativePath, string  advertisementFilesFolderRelativePath)
+		public UploadedFilesSettings(string documentsFilesFolderRelativePath,
+			string advertisementFilesFolderRelativePath,
+			string debtorFilesFolderRelativePath)
 		{
 			DocumentsFilesFolderRelativePath = documentsFilesFolderRelativePath;
 			AdvertisementFilesFolderRelativePath = advertisementFilesFolderRelativePath;
+			DebtorFilesFolderRelativePath = debtorFilesFolderRelativePath;
 		}
 	}
 }

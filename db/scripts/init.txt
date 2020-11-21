@@ -143,3 +143,16 @@ CREATE TABLE progress.legislations
    	creator_id INT NULL REFERENCES progress.users (id) ON DELETE SET NULL,
     	is_active BOOL NOT NULL DEFAULT TRUE
 );
+
+CREATE TABLE progress.debtorfiles
+(
+    	id SERIAL PRIMARY KEY,
+	name TEXT NOT NULL,
+	native_name TEXT NOT NULL,
+	path TEXT NOT NULL,
+	length INT NOT NULL,
+	
+	uploaded TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
+	uploader_id INT NOT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
+	is_active BOOL NOT NULL DEFAULT TRUE
+);

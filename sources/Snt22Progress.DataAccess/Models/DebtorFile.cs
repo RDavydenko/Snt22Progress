@@ -5,7 +5,10 @@ using Snt22Progress.DataAccess.Infrastructure;
 
 namespace Snt22Progress.DataAccess.Models
 {
-	public class AdvertisementFile : IBaseEntity<int>
+	/// <summary>
+	/// Файл о должниках
+	/// </summary>
+	public class DebtorFile : IBaseEntity<int>
 	{
 		public int id { get; set; }
 
@@ -15,10 +18,12 @@ namespace Snt22Progress.DataAccess.Models
 
 		public string path { get; set; }
 
-		public int length { get; set; }		
+		public int length { get; set; }
 
 		public DateTime uploaded { get; set; }
 
 		public int? uploader_id { get; set; }
+
+		public bool is_active { get; set; } = true;
 	}
 }

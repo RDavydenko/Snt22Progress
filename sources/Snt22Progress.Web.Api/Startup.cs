@@ -66,7 +66,8 @@ namespace Snt22Progress.Web.Api
 			{
 				return new ConfigurationService(new BussinesLogic.Models.UploadedFilesSettings(
 						documentsFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("DocumentsFilesFolderRelativePath")?.Value,
-						advertisementFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("AdvertisementFilesFolderRelativePath")?.Value
+						advertisementFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("AdvertisementFilesFolderRelativePath")?.Value,
+						debtorFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("DebtorFilesFolderRelativePath")?.Value
 					));
 			});
 
@@ -80,6 +81,7 @@ namespace Snt22Progress.Web.Api
 			services.AddTransient<IRepository<Document, int>, DocumentsRepository>(f => new DocumentsRepository(dbConnection));
 			services.AddTransient<IRepository<Question, int>, QuestionsRepository>(f => new QuestionsRepository(dbConnection));
 			services.AddTransient<IRepository<Legislation, int>, LegislationsRepository>(f => new LegislationsRepository(dbConnection));
+			services.AddTransient<IRepository<DebtorFile, int>, DebtorFilesRepository>(f => new DebtorFilesRepository(dbConnection));
 			services.AddTransient<IRepository<UserToChoise, int>, UserToChoisesRepository>(f => new UserToChoisesRepository(dbConnection));
 			services.AddTransient<IRepository<UserToRole, int>, UserToRolesRepository>(f => new UserToRolesRepository(dbConnection));
 			services.AddTransient<IRepository<ValuePair, int>, ValuePairsRepository>(f => new ValuePairsRepository(dbConnection));
@@ -97,6 +99,7 @@ namespace Snt22Progress.Web.Api
 			services.AddTransient<IDocumentsService, DocumentsService>();
 			services.AddTransient<IGovernmentService, GovernmentService>();
 			services.AddTransient<ILegislationService, LegislationService>();
+			services.AddTransient<IDebtorFilesService, DebtorFilesService>();
 
 			// Маппер
 			services.AddTransient<IMapper>(f => (new MapperConfiguration(cfg => cfg.AddMaps(new Assembly[] { BussinesLogicAssembly.Assembly })))
