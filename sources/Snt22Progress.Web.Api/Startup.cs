@@ -124,6 +124,11 @@ namespace Snt22Progress.Web.Api
 				opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Snt 22 Progress API");
 			});
 
+			// Класс для хранения и удобной передачи зависимостей, чтобы не городить кучу параметров в конструкторах
+			Global.Initialize(
+				authService: app.ApplicationServices.GetService<IAuthService>()
+			);
+
 			app.UseAuthentication();
 			app.UseAuthorization();
 

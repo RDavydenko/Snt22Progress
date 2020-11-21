@@ -50,15 +50,19 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// </summary>
 		/// <param name="dto">Пост</param>
 		/// <returns></returns>
-		[Authorize(Roles = "Admin")]
+		[Authorize]
 		[HttpPost("add")]
 		public async Task<ResultResponse<PostGetDto>> AddPost([FromBody] PostCreateDto dto)
 		{
-			if (dto == null || !ModelState.IsValid)
+			if (await IsInRole(Roles.Admin, Roles.Moderator))
 			{
-				return ResultResponse<PostGetDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				if (dto == null || !ModelState.IsValid)
+				{
+					return ResultResponse<PostGetDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				}
+				return await _postsService.CreatePostAsync(dto, UserId.Value);
 			}
-			return await _postsService.CreatePostAsync(dto, UserId.Value);
+			return ResultResponse<PostGetDto>.GetBadResponse(BussinesLogic.Models.StatusCode.Forbidden);
 		}
 
 		/// <summary>
@@ -67,15 +71,19 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// <param name="id">Идентификатор</param>
 		/// <param name="dto">Пост</param>
 		/// <returns></returns>
-		[Authorize(Roles = "Admin")]
+		[Authorize]
 		[HttpPost("{id}/edit")]
 		public async Task<ResultResponse<PostGetDto>> EditPost([FromRoute] int id, [FromBody] PostEditDto dto)
 		{
-			if (dto == null || !ModelState.IsValid)
+			if (await IsInRole(Roles.Admin, Roles.Moderator))
 			{
-				return ResultResponse<PostGetDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				if (dto == null || !ModelState.IsValid)
+				{
+					return ResultResponse<PostGetDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				}
+				return await _postsService.UpdatePostAsync(id, dto, UserId.Value);
 			}
-			return await _postsService.UpdatePostAsync(id, dto, UserId.Value);
+			return ResultResponse<PostGetDto>.GetBadResponse(BussinesLogic.Models.StatusCode.Forbidden);
 		}
 
 		/// <summary>
@@ -83,15 +91,19 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор поста</param>
 		/// <returns></returns>
-		[Authorize(Roles = "Admin")]
+		[Authorize]
 		[HttpPost("{id}/delete")]
 		public async Task<ResultResponse> DeletePost([FromRoute] int id)
 		{
-			if (!ModelState.IsValid)
+			if (await IsInRole(Roles.Admin, Roles.Moderator))
 			{
-				return ResultResponse.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				if (!ModelState.IsValid)
+				{
+					return ResultResponse.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				}
+				return await _postsService.DeletePostAsync(id);
 			}
-			return await _postsService.DeletePostAsync(id);
+			return ResultResponse.GetBadResponse(BussinesLogic.Models.StatusCode.Forbidden);
 		}
 	}
 }

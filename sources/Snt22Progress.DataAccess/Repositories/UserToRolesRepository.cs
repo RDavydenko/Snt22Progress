@@ -7,7 +7,7 @@ namespace Snt22Progress.DataAccess.Repositories
 	{
 		public override string SchemaName => "progress";
 
-		public override string TableName => "userstoroles";
+		public override string TableName => "usertoroles";
 
 		public UserToRolesRepository(string connection) : base(connection)
 		{

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Snt22Progress.BussinesLogic.Interfaces;
 using Snt22Progress.BussinesLogic.Models;
 using Snt22Progress.BussinesLogic.Models.DataContracts;
 using Snt22Progress.DataAccess.Infrastructure;
 using Snt22Progress.DataAccess.Models;
-using Snt22Progress.DataAccess.Repositories;
 using Snt22Progress.Logging;
 
 namespace Snt22Progress.BussinesLogic.Services
@@ -21,17 +21,24 @@ namespace Snt22Progress.BussinesLogic.Services
 		private readonly AuthSettings _authSettings;
 		private readonly IPasswordHashService _passwordHashService;
 		private readonly IProgressLogger _progressLogger;
+
 		private readonly IRepository<User, int> _userRepository;
+		private readonly IRepository<Role, int> _rolesRepository;
+		private readonly IRepository<UserToRole, int> _userToRolesRepository;
 
 		public AuthService(AuthSettings authSettings,
 			IPasswordHashService passwordHashService,
 			IProgressLogger progressLogger,
-			IRepository<User, int> userRepository)
+			IRepository<User, int> userRepository,
+			IRepository<Role, int> rolesRepository,
+			IRepository<UserToRole, int> userToRolesRepository)
 		{
 			_authSettings = authSettings;
 			_passwordHashService = passwordHashService;
 			_progressLogger = progressLogger;
 			_userRepository = userRepository;
+			_rolesRepository = rolesRepository;
+			_userToRolesRepository = userToRolesRepository;
 		}
 
 		public async Task<ResultResponse<JwtAuthorizationDto>> LoginAsync(string login, string password)
@@ -96,13 +103,46 @@ namespace Snt22Progress.BussinesLogic.Services
 					new Claim(ClaimTypes.Email, user.email.ToString())
 				};
 				ClaimsIdentity claimsIdentity =
-				new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+				new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType,
 					ClaimsIdentity.DefaultRoleClaimType);
 				return claimsIdentity;
 			}
 
 			// Если пароль не подошел
 			return null;
+		}
+
+		public async Task<ResultResponse> IsInRole(int userId, params string[] roles)
+		{
+			try
+			{
+				var user = await _userRepository.GetAsync(userId);
+				if (user != null)
+				{
+					var roleIds = (await _userToRolesRepository.GetAsync($"where user_id = {userId}")).Select(x => x.role_id);
+					IEnumerable<string> roleNames = new List<string>();
+					if (roleIds.Count() > 0)
+					{
+						roleNames = (await _rolesRepository.GetAsync($"where id IN ({string.Join(", ", roleIds)})")).Select(x => x.name);
+					}
+					var isInRole = false;
+					foreach (var r in roleNames)
+					{
+						if (roles.Any(x => x.ToLower() == r.ToLower()))
+						{
+							isInRole = true;
+							break;
+						}
+					}
+					return new ResultResponse(isSuccess: isInRole, statusCode: isInRole ? StatusCode.OK : StatusCode.NotFound);
+				}
+				return ResultResponse.GetBadResponse(StatusCode.NotFound);
+			}
+			catch (Exception ex)
+			{
+				_progressLogger.Error(ex, new { userId, roles }, GetType().Name, nameof(IsInRole));
+				return ResultResponse.GetInternalServerErrorResponse();
+			}
 		}
 	}
 }

@@ -54,25 +54,29 @@ namespace Snt22Progress.Web.Api.Controllers
 		[HttpPost("add")]
 		public async Task<ResultResponse<DocumentDto>> AddDocument([FromForm] DocumentCreateDto dto)
 		{
-			if (dto != null && ModelState.IsValid)
+			if (await IsInRole(Roles.Admin, Roles.Moderator))
 			{
-				if (dto.File == null)
+				if (dto != null && ModelState.IsValid)
 				{
-					if (Request.HasFormContentType && Request?.Form?.Files?.Count != 0)
+					if (dto.File == null)
 					{
-						dto = new DocumentCreateDto { File = Request.Form.Files[0] };
+						if (Request.HasFormContentType && Request?.Form?.Files?.Count != 0)
+						{
+							dto = new DocumentCreateDto { File = Request.Form.Files[0] };
+						}
+					}
+					if (dto.File == null)
+					{
+						return ResultResponse<DocumentDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest, "Необходимо передать файл");
+					}
+					else
+					{
+						return await _documentsService.AddDocumentAsync(dto, UserId.Value);
 					}
 				}
-				if (dto.File == null)
-				{
-					return ResultResponse<DocumentDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest, "Необходимо передать файл");
-				}
-				else
-				{
-					return await _documentsService.AddDocumentAsync(dto, UserId.Value);
-				}
+				return ResultResponse<DocumentDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
 			}
-			return ResultResponse<DocumentDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+			return ResultResponse<DocumentDto>.GetBadResponse(BussinesLogic.Models.StatusCode.Forbidden);
 		}
 
 		/// <summary>
@@ -84,7 +88,11 @@ namespace Snt22Progress.Web.Api.Controllers
 		[HttpPost("{id}/delete")]
 		public async Task<ResultResponse> RemoveDocument([FromRoute] int id)
 		{
-			return await _documentsService.RemoveDocumentAsync(id);
+			if (await IsInRole(Roles.Admin, Roles.Moderator))
+			{
+				return await _documentsService.RemoveDocumentAsync(id);
+			}
+			return ResultResponse.GetBadResponse(BussinesLogic.Models.StatusCode.Forbidden);
 		}
 	}
 }
