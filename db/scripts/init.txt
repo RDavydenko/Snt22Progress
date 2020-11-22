@@ -110,7 +110,6 @@ CREATE TABLE progress.usertochoises
 CREATE TABLE progress.advertisementfiles
 (
 	id SERIAL PRIMARY KEY,
-	name TEXT NOT NULL,
 	native_name TEXT NOT NULL,
 	path TEXT NOT NULL,
 	length INT NOT NULL,

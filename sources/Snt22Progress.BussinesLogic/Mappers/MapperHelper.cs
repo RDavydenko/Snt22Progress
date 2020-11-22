@@ -30,5 +30,17 @@ namespace Snt22Progress.BussinesLogic.Mappers
 				return null;
 			}
 		}
+
+		public static Uploader InitUploader(int? id, string fname, string lname, string mname)
+		{
+			if (id.HasValue)
+			{
+				return new Uploader { Id = id.Value, FName = fname, LName = lname, MName = mname };
+			}
+			else
+			{
+				return null;
+			}
+		}
 	}
 }

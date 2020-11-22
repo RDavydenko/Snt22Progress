@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Snt22Progress.Contracts.Infrastructure;
+using Snt22Progress.Contracts.Models.Base;
 
 namespace Snt22Progress.Contracts.Models.Advertisements
 {
@@ -12,8 +13,6 @@ namespace Snt22Progress.Contracts.Models.Advertisements
 	{
 		public int Id { get; set; }
 
-		public string Name { get; set; }
-
 		public string NativeName { get; set; }
 
 		public string Path { get; set; }
@@ -22,6 +21,6 @@ namespace Snt22Progress.Contracts.Models.Advertisements
 
 		public DateTime Uploaded { get; set; }
 
-		public int? UploaderId { get; set; }
+		public Uploader Uploader { get; set; }
 	}
 }

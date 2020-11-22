@@ -50,7 +50,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// <returns></returns>
 		[Authorize]
 		[HttpPost("add")]
-		public async Task<ResultResponse<AdvertisementDto>> AddAdvertisement([FromBody] AdvertisementCreateDto dto)
+		public async Task<ResultResponse<AdvertisementDto>> AddAdvertisement([FromForm] AdvertisementCreateDto dto)
 		{
 			if (await IsInRole(Roles.Admin, Roles.Moderator))
 			{
@@ -77,7 +77,7 @@ namespace Snt22Progress.Web.Api.Controllers
 			{
 				if (dto != null && ModelState.IsValid)
 				{
-					return await _advertisementsService.EditAdvertisementAsync(id, dto, UserId.Value);
+					return await _advertisementsService.EditAdvertisementAsync(id, dto);
 				}
 				return ResultResponse<AdvertisementDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
 			}

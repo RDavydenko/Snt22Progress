@@ -89,6 +89,7 @@ namespace Snt22Progress.Web.Api
 			// Репозитории (представления)
 			services.AddTransient<IViewRepository<PostView, int>, PostViewsRepository>(f => new PostViewsRepository(dbConnection));
 			services.AddTransient<IViewRepository<DocumentView, int>, DocumentViewsRepository>(f => new DocumentViewsRepository(dbConnection));
+			services.AddTransient<IViewRepository<AdvertisementView, int>, AdvertisementViewsRepository>(f => new AdvertisementViewsRepository(dbConnection));
 
 			// Сервисы
 			services.AddTransient<IAuthService, AuthService>();
@@ -100,6 +101,7 @@ namespace Snt22Progress.Web.Api
 			services.AddTransient<IGovernmentService, GovernmentService>();
 			services.AddTransient<ILegislationService, LegislationService>();
 			services.AddTransient<IDebtorFilesService, DebtorFilesService>();
+			services.AddTransient<IAdvertisementsService, AdvertisementsService>();
 
 			// Маппер
 			services.AddTransient<IMapper>(f => (new MapperConfiguration(cfg => cfg.AddMaps(new Assembly[] { BussinesLogicAssembly.Assembly })))

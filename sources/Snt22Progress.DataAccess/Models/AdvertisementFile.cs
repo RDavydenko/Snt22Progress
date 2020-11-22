@@ -9,8 +9,6 @@ namespace Snt22Progress.DataAccess.Models
 	{
 		public int id { get; set; }
 
-		public string name { get; set; }
-
 		public string native_name { get; set; }
 
 		public string path { get; set; }

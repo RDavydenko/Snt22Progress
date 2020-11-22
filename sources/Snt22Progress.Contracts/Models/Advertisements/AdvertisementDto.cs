@@ -28,9 +28,5 @@ namespace Snt22Progress.Contracts.Models.Advertisements
 		public DateTime Created { get; set; }
 
 		public Creator Creator { get; set; }
-
-		public DateTime? edited { get; set; }
-
-		public Editor Editor { get; set; }
 	}
 }

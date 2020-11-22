@@ -25,10 +25,6 @@ namespace Snt22Progress.DataAccess.Models
 
 		public int? creator_id { get; set; }
 
-		public DateTime? edited { get; set; }
-
-		public int? editor_id { get; set; }
-
 		public bool is_active { get; set; } = true;
 	}
 }

@@ -39,10 +39,23 @@ namespace Snt22Progress.Web.Api.Controllers
 			_authService = Global.Instance.AuthService;
 		}
 
+		/// <summary>
+		/// Состоит ли пользователь в одной из ролей
+		/// </summary>
+		/// <param name="roles">Список ролей</param>
+		/// <returns></returns>
 		protected async Task<bool> IsInRole(params string[] roles)
 		{
 			return (await _authService.IsInRole(UserId.GetValueOrDefault(), roles)).IsSuccess;
 		}
 
+		/// <summary>
+		/// Авторизован ли пользователь
+		/// </summary>
+		/// <returns></returns>
+		protected bool IsAuthorized()
+		{
+			return UserId.HasValue;
+		}
 	}
 }

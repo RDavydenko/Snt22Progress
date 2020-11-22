@@ -21,6 +21,7 @@ namespace Snt22Progress.Tests.DataAccess
 			IRepository<User, int> usersRepository = new UsersRepository(con);
 			IRepository<Advertisement, int> advertisementsRepository = new AdvertisementsRepository(con);
 			IRepository<AdvertisementFile, int> advertisementFilesRepository = new AdvertisementFilesRepository(con);
+			IViewRepository<AdvertisementView, int> advertisementViewsRepository = new AdvertisementViewsRepository(con);
 			IRepository<DebtorFile, int> debtorFilesRepository = new DebtorFilesRepository(con);
 			IRepository<Choise, int> choisesRepository = new ChoisesRepository(con);
 			IRepository<Document, int> documentsRepository = new DocumentsRepository(con);
@@ -38,6 +39,7 @@ namespace Snt22Progress.Tests.DataAccess
 			await usersRepository.GetAsync(id);
 			await advertisementsRepository.GetAsync(id);
 			await advertisementFilesRepository.GetAsync(id);
+			await advertisementViewsRepository.GetAsync(id);
 			await debtorFilesRepository.GetAsync(id);
 			await choisesRepository.GetAsync(id);
 			await documentsRepository.GetAsync(id);
@@ -50,6 +52,23 @@ namespace Snt22Progress.Tests.DataAccess
 			await userToChoisesRepository.GetAsync(id);
 			await userToRolesRepository.GetAsync(id);
 			await valuePairsRepository.GetAsync(id);
+
+			await usersRepository.GetAsync("WHERE id = 1");
+			await advertisementsRepository.GetAsync("WHERE id = 1");
+			await advertisementFilesRepository.GetAsync("WHERE id = 1");
+			await advertisementViewsRepository.GetAsync("WHERE id = 1");
+			await debtorFilesRepository.GetAsync("WHERE id = 1");
+			await choisesRepository.GetAsync("WHERE id = 1");
+			await documentsRepository.GetAsync("WHERE id = 1");
+			await documentViewsRepository.GetAsync("WHERE id = 1");
+			await postsRepository.GetAsync("WHERE id = 1");
+			await postViewsRepository.GetAsync("WHERE id = 1");
+			await questionsRepository.GetAsync("WHERE id = 1");
+			await legislationsRepository.GetAsync("WHERE id = 1");
+			await rolesRepository.GetAsync("WHERE id = 1");
+			await userToChoisesRepository.GetAsync("WHERE id = 1");
+			await userToRolesRepository.GetAsync("WHERE id = 1");
+			await valuePairsRepository.GetAsync("WHERE id = 1");
 		}
 
 
