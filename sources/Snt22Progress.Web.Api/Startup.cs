@@ -36,6 +36,7 @@ namespace Snt22Progress.Web.Api
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			// Настройки авторизации по токену
 			services.AddSingleton<AuthSettings>(f => new AuthSettings(Configuration));
 
 			var authSettings = new AuthSettings(Configuration);
@@ -62,7 +63,7 @@ namespace Snt22Progress.Web.Api
 			var dbConnection = Configuration.GetSection("ConnectionStrings")?.GetSection("DefaultPostgres")?.Value;
 
 			// Сервис для безболезненного проброса всяких констант (к примеру из appsettings)
-			services.AddTransient<ConfigurationService>(f =>
+			services.AddSingleton<ConfigurationService>(f =>
 			{
 				return new ConfigurationService(new BussinesLogic.Models.UploadedFilesSettings(
 						documentsFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("DocumentsFilesFolderRelativePath")?.Value,
@@ -90,6 +91,7 @@ namespace Snt22Progress.Web.Api
 			services.AddTransient<IViewRepository<PostView, int>, PostViewsRepository>(f => new PostViewsRepository(dbConnection));
 			services.AddTransient<IViewRepository<DocumentView, int>, DocumentViewsRepository>(f => new DocumentViewsRepository(dbConnection));
 			services.AddTransient<IViewRepository<AdvertisementView, int>, AdvertisementViewsRepository>(f => new AdvertisementViewsRepository(dbConnection));
+			services.AddTransient<IViewRepository<QuestionView, int>, QuestionViewsRepository>(f => new QuestionViewsRepository(dbConnection));
 
 			// Сервисы
 			services.AddTransient<IAuthService, AuthService>();
@@ -102,6 +104,7 @@ namespace Snt22Progress.Web.Api
 			services.AddTransient<ILegislationService, LegislationService>();
 			services.AddTransient<IDebtorFilesService, DebtorFilesService>();
 			services.AddTransient<IAdvertisementsService, AdvertisementsService>();
+			services.AddTransient<IQuestionsService, QuestionsService>();
 
 			// Маппер
 			services.AddTransient<IMapper>(f => (new MapperConfiguration(cfg => cfg.AddMaps(new Assembly[] { BussinesLogicAssembly.Assembly })))

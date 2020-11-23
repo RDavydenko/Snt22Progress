@@ -1,0 +1,32 @@
+CREATE VIEW progress.questionsview AS
+SELECT q.*, 
+    cr.fname AS creator_fname,
+    cr.lname AS creator_lname,
+    cr.mname AS creator_mname,
+    ed.fname AS editor_fname,
+    ed.lname AS editor_lname,
+    ed.mname AS editor_mname,
+	chTbl1.choise_ids,
+	chTbl2.choise_texts,
+	chTbl3.choise_votes_counts
+FROM progress.questions q
+LEFT JOIN progress.users cr ON q.creator_id = cr.id
+LEFT JOIN progress.users ed ON q.editor_id = ed.id
+LEFT JOIN (SELECT qu.id AS question_id,
+  STRING_AGG(ch.id::TEXT , '|') AS choise_ids
+  FROM progress.questions qu	
+  LEFT JOIN progress.choises ch ON ch.question_id = qu.id
+  WHERE ch.question_id = qu.id
+  GROUP BY qu.id) chTbl1 ON chTbl1.question_id = q.id
+LEFT JOIN (SELECT qu.id AS question_id,
+  STRING_AGG(ch.text , '|') AS choise_texts
+  FROM progress.questions qu	
+  LEFT JOIN progress.choises ch ON ch.question_id = qu.id
+  WHERE ch.question_id = qu.id
+  GROUP BY qu.id) chTbl2 ON chTbl2.question_id = q.id
+LEFT JOIN (SELECT qu.id AS question_id,
+  STRING_AGG(ch.votes_count::TEXT , '|') AS choise_votes_counts
+  FROM progress.questions qu	
+  LEFT JOIN progress.choises ch ON ch.question_id = qu.id
+  WHERE ch.question_id = qu.id
+  GROUP BY qu.id) chTbl3 ON chTbl3.question_id = q.id

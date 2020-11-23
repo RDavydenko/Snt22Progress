@@ -29,6 +29,7 @@ namespace Snt22Progress.Tests.DataAccess
 			IRepository<Post, int> postsRepository = new PostsRepository(con);
 			IViewRepository<PostView, int> postViewsRepository = new PostViewsRepository(con);
 			IRepository<Question, int> questionsRepository = new QuestionsRepository(con);
+			IViewRepository<QuestionView, int> questionViewsRepository = new QuestionViewsRepository(con);
 			IRepository<Legislation, int> legislationsRepository = new LegislationsRepository(con);
 			IRepository<Role, int> rolesRepository = new RolesRepository(con);
 			IRepository<UserToChoise, int> userToChoisesRepository = new UserToChoisesRepository(con);
@@ -47,6 +48,7 @@ namespace Snt22Progress.Tests.DataAccess
 			await postsRepository.GetAsync(id);
 			await postViewsRepository.GetAsync(id);
 			await questionsRepository.GetAsync(id);
+			await questionViewsRepository.GetAsync(id);
 			await legislationsRepository.GetAsync(id);
 			await rolesRepository.GetAsync(id);
 			await userToChoisesRepository.GetAsync(id);
@@ -64,6 +66,7 @@ namespace Snt22Progress.Tests.DataAccess
 			await postsRepository.GetAsync("WHERE id = 1");
 			await postViewsRepository.GetAsync("WHERE id = 1");
 			await questionsRepository.GetAsync("WHERE id = 1");
+			await questionViewsRepository.GetAsync("WHERE id = 1");
 			await legislationsRepository.GetAsync("WHERE id = 1");
 			await rolesRepository.GetAsync("WHERE id = 1");
 			await userToChoisesRepository.GetAsync("WHERE id = 1");

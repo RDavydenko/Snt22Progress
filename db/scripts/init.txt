@@ -91,13 +91,7 @@ CREATE TABLE progress.choises
 	id SERIAL PRIMARY KEY,
 	question_id INT REFERENCES progress.questions (id) ON DELETE CASCADE,
 	text TEXT NOT NULL,
-	votes_count INT NOT NULL DEFAULT 0,
-	
-	created TIMESTAMP DEFAULT NOW()::TIMESTAMP NOT NULL,
-	creator_id INT NOT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
-	edited TIMESTAMP NULL,
-	editor_id INT NULL REFERENCES progress.users (id) ON DELETE NO ACTION,
-	is_active BOOL NOT NULL DEFAULT TRUE
+	votes_count INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE progress.usertochoises

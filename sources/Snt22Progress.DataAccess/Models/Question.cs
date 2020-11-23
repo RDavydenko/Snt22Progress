@@ -19,7 +19,6 @@ namespace Snt22Progress.DataAccess.Models
 
 		public int? editor_id { get; set; }
 
-		public bool is_active { get; set; } = true;
-	
+		public bool is_active { get; set; } = true;	
 	}
 }
