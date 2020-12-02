@@ -4,7 +4,8 @@
     <hr />
     <FotoramaSlider>
       <template>
-        <img src="@/assets/images/docs/Plan_rabot_na_2019_god.jpg" />
+        <img v-for="doc in documents" :key="doc.id" 
+          :src="doc.path.replace('\\', '/')" />
       </template>
     </FotoramaSlider>
   </div>
@@ -12,10 +13,17 @@
 
 <script>
 import FotoramaSlider from "@/components/Slider/FotoramaSlider.vue";
+import { mapGetters } from 'vuex';
 
 export default {
+  computed: {
+    ...mapGetters('documents', ['documents'])
+  },
   components: {
     FotoramaSlider,
   },
+  async beforeCreate() {
+    await this.$store.dispatch('documents/fetchDocuments');
+  }
 };
 </script>

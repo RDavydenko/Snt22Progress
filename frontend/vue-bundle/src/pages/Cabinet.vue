@@ -1,18 +1,15 @@
 <template>
   <div>
     <h1>Личный кабинет</h1>
-    <form class="" action="" method="post">     
+    <form @submit.prevent="update">
       <div class="form-group">
         <div style="width: 380px" class="mt-2">
           <div><label for="first_name">Имя</label></div>
           <div>
             <input
               class="form-control"
-              id="first_name"
-              name="first_name"
-              placeholder="Вася"
               type="text"
-              value="dsfsdf"
+              v-model="user.fName"
             />
           </div>
         </div>
@@ -22,11 +19,8 @@
           <div>
             <input
               class="form-control"
-              id="last_name"
-              name="last_name"
-              placeholder="Пупкин"
               type="text"
-              value="sdfsdfsdf"
+              v-model="user.lName"
             />
           </div>
         </div>
@@ -36,11 +30,8 @@
           <div>
             <input
               class="form-control"
-              id="middle_name"
-              name="middle_name"
-              placeholder="Пупкиныч"
               type="text"
-              value="sdfsdfsdf"
+              v-model="user.mName"
             />
           </div>
         </div>
@@ -50,11 +41,8 @@
           <div>
             <input
               class="form-control"
-              id="location"
-              name="location"
-              placeholder="1-20000"
               type="text"
-              value="10001"
+              v-model="user.areaNumber"
             />
           </div>
         </div>
@@ -64,11 +52,8 @@
           <div>
             <input
               class="form-control"
-              id="email"
-              name="email"
-              placeholder="name@mail.ru"
               type="text"
-              value="vac@mail.ru"
+              v-model="user.email"
             />
           </div>
         </div>
@@ -80,5 +65,19 @@
 </template>
 
 <script>
-export default {};
+import {mapGetters} from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters('cabinet', ['user'])
+  },
+  methods: {
+    update() {
+      this.$store.dispatch('cabinet/updateUser', this.user);
+    }
+  },
+  created() {
+    this.$store.dispatch('cabinet/fetchUser');
+  }
+};
 </script>

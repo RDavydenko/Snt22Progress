@@ -40,7 +40,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		/// <param name="id">Идентификатор поста</param>
 		/// <returns></returns>
 		[HttpGet("{id}")]
-		public async Task<ResultResponse<PostGetDto>> GetPosts([FromQuery] int id)
+		public async Task<ResultResponse<PostGetDto>> GetPosts([FromRoute] int id)
 		{
 			return await _postsService.GetPostAsync(id);
 		}

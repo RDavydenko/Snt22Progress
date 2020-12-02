@@ -117,6 +117,9 @@ namespace Snt22Progress.Web.Api
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Snt 22 Progress API", Version = "v1" });
 			});
+
+			// CORS - для работы с фронтендом
+			services.AddCors();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -136,10 +139,26 @@ namespace Snt22Progress.Web.Api
 				opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Snt 22 Progress API");
 			});
 
+			// Разрешить использование статических файлов (для загруженных фото и т.д.)
+			var requestPathForStaticFiles = "/Upload";
+			app.UseStaticFiles(requestPathForStaticFiles);
+
 			// Класс для хранения и удобной передачи зависимостей, чтобы не городить кучу параметров в конструкторах
 			Global.Initialize(
 				authService: app.ApplicationServices.GetService<IAuthService>()
 			);
+
+			// Настройка CORS
+			var corsSettings = Configuration.GetSection("CorsSettings");
+			var allowedMethods = corsSettings?.GetSection("AllowedMethods")?.Value?.Split(',') ?? Array.Empty<string>();
+			var allowedHeaders = corsSettings?.GetSection("AllowedHeaders")?.Value?.Split(',') ?? Array.Empty<string>();
+			var allowedOrigins = corsSettings?.GetSection("AllowedOrigins")?.Value?.Split(',') ?? Array.Empty<string>();
+			app.UseCors(builder =>
+			{
+				builder.WithMethods(allowedMethods);
+				builder.WithHeaders(allowedHeaders);
+				builder.WithOrigins(allowedOrigins);
+			});
 
 			app.UseAuthentication();
 			app.UseAuthorization();

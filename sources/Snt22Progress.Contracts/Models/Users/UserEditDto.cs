@@ -11,9 +11,9 @@ namespace Snt22Progress.Contracts.Models.Users
 		public string FName { get; set; }
 
 		[Required]
-		public string SName { get; set; }
-
 		public string LName { get; set; }
+
+		public string MName { get; set; }
 
 		[Range(0, 150)]
 		public int? Age { get; set; }

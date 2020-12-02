@@ -26,6 +26,21 @@ namespace Snt22Progress.Web.Api.Controllers
 		}
 
 		/// <summary>
+		/// Получить информацию о текущем пользователе
+		/// </summary>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet("about")]
+		public async Task<ResultResponse<UserDto>> AboutUser()
+		{
+			if (IsAuthorized())
+			{
+				return await _usersService.GetAsync(UserId.Value);
+			}
+			return ResultResponse<UserDto>.GetBadResponse(BussinesLogic.Models.StatusCode.Unauthorized);
+		}
+
+		/// <summary>
 		/// Зарегистрировать нового пользователя
 		/// </summary>
 		/// <returns></returns>
@@ -48,22 +63,30 @@ namespace Snt22Progress.Web.Api.Controllers
 		[HttpPost("edit")]
 		public async Task<ResultResponse<UserDto>> Edit(UserEditDto dto)
 		{
-			if (dto == null || !ModelState.IsValid)
+			if (IsAuthorized())
 			{
-				return ResultResponse<UserDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				if (dto == null || !ModelState.IsValid)
+				{
+					return ResultResponse<UserDto>.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				}
+				return await _usersService.EditAsync(UserId.Value, dto);
 			}
-			return await _usersService.EditAsync(UserId.Value, dto);
+			return ResultResponse<UserDto>.GetBadResponse(BussinesLogic.Models.StatusCode.Unauthorized);
 		}
 
 		[Authorize]
 		[HttpPost("change-password")]
 		public async Task<ResultResponse> ChangePassword(ChangePasswordDto dto)
 		{
-			if (dto == null || !ModelState.IsValid)
+			if (IsAuthorized())
 			{
-				return ResultResponse.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				if (dto == null || !ModelState.IsValid)
+				{
+					return ResultResponse.GetBadResponse(BussinesLogic.Models.StatusCode.BadRequest);
+				}
+				return await _usersService.ChangePasswordAsync(UserId.Value, dto);
 			}
-			return await _usersService.ChangePasswordAsync(UserId.Value, dto);
+			return ResultResponse.GetBadResponse(BussinesLogic.Models.StatusCode.Unauthorized);
 		}
 	}
 }

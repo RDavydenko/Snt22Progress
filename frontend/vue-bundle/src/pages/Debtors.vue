@@ -4,8 +4,10 @@
     <hr />
     <FotoramaSlider>
       <template>
-        <img src="@/assets/images/debtors/debtors-1.jpg" />
-        <img src="@/assets/images/debtors/debtors-2.jpg" />
+        <img 
+          v-for="debtor in debtors"
+          :key="debtor.id"
+          :src="debtor.path.replace('\\', '/')" />
       </template>
     </FotoramaSlider>
   </div>
@@ -13,10 +15,17 @@
 
 <script>
 import FotoramaSlider from "@/components/Slider/FotoramaSlider.vue";
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
     FotoramaSlider,
   },
+  computed: {
+    ...mapGetters('debtors', ['debtors'])
+  },
+  async beforeCreate() {
+    await this.$store.dispatch('debtors/fetchDebtors');
+  }
 };
 </script>

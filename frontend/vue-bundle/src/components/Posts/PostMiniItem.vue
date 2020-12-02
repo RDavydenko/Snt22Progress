@@ -1,12 +1,12 @@
 <template>
   <div class="card mb-3" style="width: 100%">
     <div class="card-body">
-      <h4 class="card-title">График работы</h4>
-      <h6 class="card-subtitle mb-2 text-muted">19 сентября 2020 г. 13:58</h6>
+      <h4 class="card-title">{{ post.title }}</h4>
+      <h6 class="card-subtitle mb-2 text-muted">{{ post.created }}</h6>
       <p class="card-text">
-        С 1 ноября 2020г.: пятница, суббота, воскресенье с 10-00 до 15-00
+       {{ post.text }}
       </p>
-      <router-link to="/7/">
+      <router-link :to="`/${post.id}`">
         <button
           style="
             float: left;
@@ -27,7 +27,12 @@
 
 <script>
 export default {
-
+  props: {
+    post: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Вход в аккаунт</h1>
-    <form class="" action="" method="post">
+    <form @submit.prevent="login">
       <div class="form-group">
         <div class="mt-2" style="width: 380px">
           <div><label for="email">Адрес электронной почты</label></div>
@@ -13,6 +13,7 @@
               placeholder="name@mail.ru"
               type="text"
               value=""
+              v-model="email"
             />
           </div>
         </div>
@@ -26,6 +27,7 @@
               name="password"
               type="password"
               value=""
+              v-model="password"
             />
           </div>
         </div>
@@ -40,7 +42,31 @@
 </template>
 
 <script>
-export default {};
+import auth from "@/api/auth";
+import { mapGetters } from "vuex";
+
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  computed: {
+    ...mapGetters("auth", ["isAuth"])
+  },
+  methods: {
+    async login() {
+      let isSuccess = await auth.login(this.email, this.password);
+      if (this.isAuth === false) {
+        this.$store.commit("auth/setAuth", isSuccess);
+      }
+      if (this.isAuth === true) {
+        window.location.replace("/");
+      }
+    }
+  }
+};
 </script>
 
 <style>

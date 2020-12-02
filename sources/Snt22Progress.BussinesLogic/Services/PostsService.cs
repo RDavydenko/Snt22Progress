@@ -58,7 +58,7 @@ namespace Snt22Progress.BussinesLogic.Services
 					return ResultResponse<PostGetDto>.GetBadResponse(StatusCode.NotFound);
 				}
 				var postDto = _mapper.Map<PostGetDto>(post);
-				return ResultResponse <PostGetDto >.GetInternalServerErrorResponse();
+				return ResultResponse<PostGetDto>.GetSuccessResponse(postDto);
 			}
 			catch (Exception ex)
 			{

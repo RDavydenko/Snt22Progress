@@ -2,13 +2,29 @@
   <div>
     <h1>Объявления о продаже участков</h1>
     <hr />
-
-    <div class="alert alert-warning">Пока что нет объявлений...</div>
+    
+    <div v-if="advertisements.length == 0" class="alert alert-warning">Пока что нет объявлений...</div>
+    <template v-else>
+        <template v-for="adv in advertisements">
+          <div :key="adv.id">
+            {{ 'Объявление: ' + adv.title }}
+          </div>
+        </template>
+    </template>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters('sales', ['advertisements'])
+  },
+  async beforeCreate() {
+    await this.$store.dispatch('sales/fetchAdvertisements');
+  }
+};
 </script>
 
 <style>

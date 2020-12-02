@@ -12,12 +12,12 @@ namespace Snt22Progress.Web.Api.Controllers
 {
 	[AllowAnonymous]
 	[ApiController]
-	[Route("api/advertisements")]
-	public class AdvertisementController : BaseApiController
+	[Route("api/sales")]
+	public class SalesController : BaseApiController
 	{
 		private readonly IAdvertisementsService _advertisementsService;
 
-		public AdvertisementController(IAdvertisementsService advertisementsService)
+		public SalesController(IAdvertisementsService advertisementsService)
 		{
 			_advertisementsService = advertisementsService;
 		}

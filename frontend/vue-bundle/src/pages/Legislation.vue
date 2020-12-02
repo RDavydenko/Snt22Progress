@@ -2,17 +2,26 @@
   <div>
     <h1>Законодательство</h1>
     <hr />
-    <a target="_blank" href="https://rg.ru/2017/07/30/fz217-site-dok.html"
-      >Федеральный закон от 29 июля 2017 года № 217-ФЗ "О ведении гражданами
-      садоводства и огородничества для собственных нужд и о внесении изменений в
-      отдельные законодательные акты Российской Федерации"</a
-    >
-    <hr />
+    <template v-for="l in legislations">
+      <div :key="l.id">
+        <a target="_blank" :href="l.url">{{ l.text }}</a>
+        <hr />
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters("legislation", ["legislations"]),
+  },
+  async beforeCreate() {
+    this.$store.dispatch("legislation/fetchLegislations");
+  },
+};
 </script>
 
 <style>

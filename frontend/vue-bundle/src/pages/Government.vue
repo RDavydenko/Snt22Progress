@@ -3,24 +3,25 @@
     <h1>Правление</h1>
     <div style="font-size: 19px; font-weight: bolder">
       <hr />
-      Светлаков Сергей Владимирович<br />
-      Дик Анна Николаевна<br />
-      Шмидт Светлана Михайловна<br />
-      Сукачева Светлана Константиновна<br />
-      Ганин Сергей Викторович<br />
-      Гладких Вадим Витальевич<br />
-      Саньков Валерий Степанович<br />
-      Абашева Алена Викторовна<br />
-      Шашмурин Сергей Анатольевич<br />
-      Черменина Елена Сергеевна<br />
-      Репко Галина Владимировна
+      <template v-for="member in members">
+        {{ `${member.lName} ${member.fName} ${member.mName}` }} <br :key="member.id"/>
+      </template>
       <hr />
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters('government', ['members'])
+  },
+  async beforeCreate() {
+    await this.$store.dispatch('government/fetchMembers');
+  }
+};
 </script>
 
 <style>
