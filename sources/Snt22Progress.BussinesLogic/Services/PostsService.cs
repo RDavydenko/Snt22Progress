@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,6 +9,7 @@ using Snt22Progress.BussinesLogic.Models;
 using Snt22Progress.Contracts.Models.Posts;
 using Snt22Progress.DataAccess.Infrastructure;
 using Snt22Progress.DataAccess.Models;
+using Snt22Progress.DataAccess.Repositories.Interfaces;
 using Snt22Progress.Logging;
 
 namespace Snt22Progress.BussinesLogic.Services
@@ -15,13 +17,13 @@ namespace Snt22Progress.BussinesLogic.Services
 	public class PostsService : IPostsService
 	{
 		private readonly IRepository<Post, int> _postsRepository;
-		private readonly IViewRepository<PostView, int> _postsViewRepository;
+		private readonly IPostViewRepository _postsViewRepository;
 		private readonly IRepository<User, int> _usersRepository;
 		private readonly IProgressLogger _progressLogger;
 		private readonly IMapper _mapper;
 
 		public PostsService(IRepository<Post, int> postsRepository,
-			IViewRepository<PostView, int> postsViewRepository,
+			IPostViewRepository postsViewRepository,
 			IRepository<User, int> usersRepository,
 			IProgressLogger progressLogger,
 			IMapper mapper)
@@ -45,6 +47,27 @@ namespace Snt22Progress.BussinesLogic.Services
 			{
 				_progressLogger.Error(ex, null, GetType().Name, nameof(GetPostsAsync));
 				return ResultResponse<IEnumerable<PostGetDto>>.GetInternalServerErrorResponse();
+			}
+		}
+
+		public async Task<ResultResponse<PagingData<PostGetDto>>> GetPagingPostsAsync(int numberPage, int pageSize)
+		{
+			try
+			{
+				var posts = await _postsViewRepository.GetAsync($"LIMIT {pageSize} OFFSET {(numberPage - 1) * pageSize}");
+				var postDtos = _mapper.Map<IEnumerable<PostGetDto>>(posts);
+				var count = await _postsViewRepository.GetCountAsync();
+
+				return ResultResponse<PagingData<PostGetDto>>.GetSuccessResponse(new PagingData<PostGetDto>(
+					postDtos.ToArray(),
+					numberPage,
+					count
+				));
+			}
+			catch (Exception ex)
+			{
+				_progressLogger.Error(ex, new { numberPage, pageSize }, GetType().Name, nameof(GetPagingPostsAsync));
+				return ResultResponse<PagingData<PostGetDto>>.GetInternalServerErrorResponse();
 			}
 		}
 

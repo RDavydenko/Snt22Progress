@@ -34,6 +34,12 @@ namespace Snt22Progress.Web.Api.Controllers
 			return await _postsService.GetPostsAsync();
 		}
 
+		[HttpGet("page/{number}")]
+		public async Task<ResultResponse<PagingData<PostGetDto>>> GetPagingPosts([FromRoute] int number, [FromQuery] int pageSize = 5)
+		{
+			return await _postsService.GetPagingPostsAsync(number, pageSize);
+		}
+
 		/// <summary>
 		/// Получить пост по идентификатору
 		/// </summary>

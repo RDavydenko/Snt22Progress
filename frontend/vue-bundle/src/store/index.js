@@ -12,6 +12,7 @@ import debtors from './modules/debtors';
 import sales from './modules/sales';
 import posts from './modules/posts';
 import votings from './modules/votings';
+import sendMail from './modules/sendMail';
 
 Vue.use(Vuex)
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     debtors,
     sales,
     posts,
-    votings
+    votings,
+    sendMail
   }
 })

@@ -1,11 +1,15 @@
 <template>
   <div v-loading.sync="loading">
     <PostMiniItem
-      v-for="post in posts"
+      v-for="post in activePagePosts"
       :key="post.id"
       :post="post"
     />
-    <Pagination />
+    <Pagination 
+      :totalNumberElements="total"
+      :countOnPage="pageSize"
+      @active-page-changed="activePageChanged"
+    />
   </div>
 </template>
 
@@ -19,11 +23,20 @@ export default {
         PostMiniItem,
         Pagination
     },
+    data: () => ({
+      pageSize: 4
+    }),
     computed: {
-      ...mapGetters('posts', ['posts', 'loading'])
+      ...mapGetters('posts', ['activePagePosts', 'total', 'loading'])
     },
     async beforeCreate() {
-      await this.$store.dispatch('posts/fetchPosts');
+      await this.$store.dispatch('posts/fetchPagingPosts', { pageNumber: 1, pageSize: this.pageSize })
+    },
+    methods: {
+      async activePageChanged(activePage) {
+        console.log(activePage);
+        await this.$store.dispatch('posts/fetchPagingPosts', { pageNumber: activePage, pageSize: this.pageSize })
+      } 
     }
 };
 </script>

@@ -1,0 +1,83 @@
+/* Error-уведомление */
+.notify-error {
+    background-color: rgb(243, 38, 38);
+    color: #fff;
+    border: none;
+    
+}
+.notify-error>.el-notification__icon.el-icon-error {
+    color: #fff;
+}
+.notify-error>.el-notification__group.is-with-icon>.el-notification__title {
+    color: #fff;
+}
+.notify-error>.el-notification__group.is-with-icon>.el-notification__content {
+    color: #fff;
+    text-align: left;
+}
+.notify-error>.el-notification__group.is-with-icon>.el-notification__closeBtn.el-icon-close {
+    color: #fff;
+}
+
+/* Warning-уведомление */
+.notify-warning {
+    background-color: rgb(226, 158, 31);
+    color: #fff;
+    border: none;
+    
+}
+.notify-warning>.el-notification__icon.el-icon-warning {
+    color: #fff;
+}
+.notify-warning>.el-notification__group.is-with-icon>.el-notification__title {
+    color: #fff;
+}
+.notify-warning>.el-notification__group.is-with-icon>.el-notification__content {
+    color: #fff;
+    text-align: left;
+}
+.notify-warning>.el-notification__group.is-with-icon>.el-notification__closeBtn.el-icon-close {
+    color: #fff;
+}
+
+/* Success-уведомление */
+.notify-success {
+    background-color: rgb(56, 173, 40);
+    color: #fff;
+    border: none;
+    
+}
+.notify-success>.el-notification__icon.el-icon-success {
+    color: #fff;
+}
+.notify-success>.el-notification__group.is-with-icon>.el-notification__title {
+    color: #fff;
+}
+.notify-success>.el-notification__group.is-with-icon>.el-notification__content {
+    color: #fff;
+    text-align: left;
+}
+.notify-success>.el-notification__group.is-with-icon>.el-notification__closeBtn.el-icon-close {
+    color: #fff;
+}
+
+/* Info-уведомление */
+.notify-info {
+    background-color: rgb(31, 122, 226);
+    color: #fff;
+    border: none;
+    
+}
+.notify-info>.el-notification__icon.el-icon-info {
+    color: #fff;
+}
+.notify-info>.el-notification__group.is-with-icon>.el-notification__title {
+    color: #fff;
+}
+.notify-info>.el-notification__group.is-with-icon>.el-notification__content {
+    color: #fff;
+    text-align: left;
+}
+.notify-info>.el-notification__group.is-with-icon>.el-notification__closeBtn.el-icon-close {
+    color: #fff;
+}

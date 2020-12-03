@@ -14,6 +14,8 @@ namespace Snt22Progress.BussinesLogic.Interfaces
 	{
 		Task<ResultResponse<IEnumerable<PostGetDto>>> GetPostsAsync();
 
+		Task<ResultResponse<PagingData<PostGetDto>>> GetPagingPostsAsync(int numberPage, int pageSize);
+
 		Task<ResultResponse<PostGetDto>> GetPostAsync(int id);
 
 		Task<ResultResponse<PostGetDto>> CreatePostAsync(PostCreateDto dto, int authorId);

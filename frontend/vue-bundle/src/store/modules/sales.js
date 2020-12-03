@@ -1,5 +1,5 @@
 import axios from '@/api';
-import { SET_STATE } from '@/utils/mutations'
+import { SET_STATE, SET_LOADING } from '@/utils/mutations'
 
 export default {
     namespaced: true,
@@ -8,20 +8,26 @@ export default {
         loading: false
     },
     getters: {
-        advertisements: state => state.advertisements
+        advertisements: state => state.advertisements,
+        loading: state => state.loading
     },
     mutations: {
-        SET_STATE
+        SET_STATE,
+        SET_LOADING
     },
     actions: {
-        async fetchAdvertisements({ state }) {
+        async fetchAdvertisements({ state, commit }) {
             try {
+                commit('SET_LOADING', { value: true });
                 let { data } = await axios.get('/sales/list');
                 if (data.isSuccess) {
-                    state.advertisements = data.result;
+                    commit('SET_STATE',{ paramName: 'advertisements', value: data.result });
+                    commit('SET_LOADING', { value: false });
                 }
             } catch (error) {
 
+            } finally {
+                commit('SET_LOADING', { value: false });
             }
         }
     }

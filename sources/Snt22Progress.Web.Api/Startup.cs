@@ -21,6 +21,7 @@ using Snt22Progress.BussinesLogic.Services;
 using Snt22Progress.DataAccess.Infrastructure;
 using Snt22Progress.DataAccess.Models;
 using Snt22Progress.DataAccess.Repositories;
+using Snt22Progress.DataAccess.Repositories.Interfaces;
 using Snt22Progress.Logging;
 
 namespace Snt22Progress.Web.Api
@@ -92,6 +93,9 @@ namespace Snt22Progress.Web.Api
 			services.AddTransient<IViewRepository<DocumentView, int>, DocumentViewsRepository>(f => new DocumentViewsRepository(dbConnection));
 			services.AddTransient<IViewRepository<AdvertisementView, int>, AdvertisementViewsRepository>(f => new AdvertisementViewsRepository(dbConnection));
 			services.AddTransient<IViewRepository<QuestionView, int>, QuestionViewsRepository>(f => new QuestionViewsRepository(dbConnection));
+
+			// Расширенные репозитории с доп.возможностями
+			services.AddTransient<IPostViewRepository, PostViewsRepository>(f => new PostViewsRepository(dbConnection));
 
 			// Сервисы
 			services.AddTransient<IAuthService, AuthService>();

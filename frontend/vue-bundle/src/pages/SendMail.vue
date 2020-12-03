@@ -2,18 +2,16 @@
   <div>
     <h1>Написать в правление</h1>
     <hr />
-    <form class="" action="" method="post">
+    <form @submit.prevent="submit">
       <div class="form-group">
         <div style="width: 380px" class="mt-2">
           <div><label for="title">Тема сообщения</label></div>
           <div>
             <input
+              v-model="mail.title"
               class="form-control"
-              id="title"
-              name="title"
               placeholder="Тема сообщения"
               type="text"
-              value=""
             />
           </div>
         </div>
@@ -21,12 +19,10 @@
           <div><label for="text">Текст сообщения</label></div>
           <div>
             <textarea
+              v-model="mail.text"
               class="form-control"
               cols="5"
-              id="text"
-              name="text"
               placeholder="Сообщение"
-              required=""
               rows="10"
             ></textarea>
           </div>
@@ -38,7 +34,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data: () => ({
+    mail: {
+      theme: '',
+      text: ''
+    }
+  }),
+  methods: {
+    submit() {
+      this.$store.dispatch('sendMail/send', this.mail);
+    }
+  }
+};
 </script>
 
 <style>
