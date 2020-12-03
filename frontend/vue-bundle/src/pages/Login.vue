@@ -53,14 +53,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("auth", ["isAuth"])
+    ...mapGetters("appState", ["isAuth"])
   },
   methods: {
     async login() {
       let isSuccess = await auth.login(this.email, this.password);
-      if (this.isAuth === false) {
-        this.$store.commit("auth/setAuth", isSuccess);
+      if (isSuccess) {
+        await this.$store.dispatch('appState/fetchAppState');
       }
+      console.log(this.isAuth);
       if (this.isAuth === true) {
         window.location.replace("/");
       }

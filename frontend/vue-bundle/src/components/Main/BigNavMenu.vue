@@ -183,17 +183,19 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
+import { SetAuthorizationToken } from '@/api/index';
 
 export default {
   computed: {
-    ...mapGetters("auth", ['isAuth']),
+    ...mapGetters("appState", ['isAuth']),
   },
   methods: {
-    ...mapMutations('auth', ['setAuth']),
-    logout() {
+    async logout() {
       localStorage.removeItem('authToken');
-      this.setAuth(false);
+      SetAuthorizationToken('empty');
+      await this.$store.dispatch('appState/fetchAppState');
+      location.replace('/');
     }
   }
 };

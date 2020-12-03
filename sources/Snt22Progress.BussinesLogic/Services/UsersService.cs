@@ -17,13 +17,22 @@ namespace Snt22Progress.BussinesLogic.Services
 	public class UsersService : IUsersService
 	{
 		private readonly IRepository<User, int> _userRepository;
+		private readonly IRepository<Role, int> _rolesRepository;
+		private readonly IRepository<UserToRole, int> _userToRolesRepository;
 		private readonly IMapper _mapper;
 		private readonly IPasswordHashService _passwordHashService;
 		private readonly IProgressLogger _progressLogger;
 
-		public UsersService(IRepository<User, int> userRepository, IMapper mapper, IPasswordHashService passwordHashService, IProgressLogger progressLogger)
+		public UsersService(IRepository<User, int> userRepository,
+			IRepository<Role, int> rolesRepository,
+			IRepository<UserToRole, int> userToRolesRepository,
+			IMapper mapper,
+			IPasswordHashService passwordHashService,
+			IProgressLogger progressLogger)
 		{
 			_userRepository = userRepository;
+			_rolesRepository = rolesRepository;
+			_userToRolesRepository = userToRolesRepository;
 			_mapper = mapper;
 			_passwordHashService = passwordHashService;
 			_progressLogger = progressLogger;
@@ -141,6 +150,30 @@ namespace Snt22Progress.BussinesLogic.Services
 			{
 				_progressLogger.Error(ex, userId, GetType().Name, nameof(ChangePasswordAsync));
 				return ResultResponse.GetInternalServerErrorResponse();
+			}
+		}
+
+		public async Task<ResultResponse<string[]>> GetUserAccess(int userId)
+		{
+			try
+			{
+				var user = await _userRepository.GetAsync(userId);
+				if (user == null)
+				{
+					return ResultResponse<string[]>.GetBadResponse(StatusCode.NotFound, "Пользователь с таким id не найден");
+				}
+				var rolesIds = (await _userToRolesRepository.GetAsync($"WHERE user_id={userId}")).Select(x => x.role_id);
+				var roleNames = Array.Empty<string>();
+				if (rolesIds.Any())
+				{
+					roleNames = (await _rolesRepository.GetAsync($"WHERE id IN ({string.Join(",", rolesIds)})")).Select(x => x.name).ToArray();
+				}
+				return ResultResponse<string[]>.GetSuccessResponse(roleNames);
+			}
+			catch (Exception ex)
+			{
+				_progressLogger.Error(ex, userId, GetType().Name, nameof(ChangePasswordAsync));
+				return ResultResponse<string[]>.GetInternalServerErrorResponse();
 			}
 		}
 

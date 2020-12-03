@@ -1,15 +1,6 @@
 import { SetAuthorizationToken } from './index';
 import axios from '.';
 
-export const isAuth = async () => {
-    try {
-        const { data } = await axios.get('/auth/is-auth');
-        return data.result;
-    } catch (error) {
-        throw error;
-    }
-}
-
 export const login = async (email, password) => {
     try {
         const { data } = await axios.post('/auth/login', JSON.stringify({login: email, password: password}));
@@ -25,7 +16,6 @@ export const login = async (email, password) => {
 
 
 const auth = {
-    isAuth,
     login
 };
 

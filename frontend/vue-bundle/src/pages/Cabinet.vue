@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading.sync="loading">
     <h1>Личный кабинет</h1>
     <form @submit.prevent="update">
       <div class="form-group">
@@ -69,7 +69,7 @@ import {mapGetters} from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters('cabinet', ['user'])
+    ...mapGetters('cabinet', ['user', 'loading'])
   },
   methods: {
     update() {

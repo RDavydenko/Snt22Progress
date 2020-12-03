@@ -1,12 +1,17 @@
 import axios from '@/api';
+import { SET_STATE } from '@/utils/mutations'
 
 export default {
     namespaced: true,
     state: {
-        advertisements: []
+        advertisements: [],
+        loading: false
     },
     getters: {
         advertisements: state => state.advertisements
+    },
+    mutations: {
+        SET_STATE
     },
     actions: {
         async fetchAdvertisements({ state }) {

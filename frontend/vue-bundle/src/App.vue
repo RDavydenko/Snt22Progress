@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-loading.sync="loading">
     <div class="container-lg">
       <!-- Big nav menu -->
       <BigNavMenu />
@@ -14,11 +14,11 @@
 </template>
 
 <script>
-
 import BigNavMenu from '@/components/Main/BigNavMenu.vue';
 import SmallNavMenu from '@/components/Main/SmallNavMenu.vue';
 import MainContent from '@/components/Main/MainContent.vue';
 import Footer from '@/components/Main/Footer.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -26,9 +26,12 @@ export default {
     SmallNavMenu,
     MainContent,
     Footer
+  },
+  computed: {
+    ...mapGetters('appState', ['loading'])
+  },
+  async beforeCreate() {
+    await this.$store.dispatch('appState/fetchAppState');
   }
 }
 </script>
-
-<style lang="scss">
-</style>

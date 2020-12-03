@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading.sync="loading">
     <PostMiniItem
       v-for="post in posts"
       :key="post.id"
@@ -20,7 +20,7 @@ export default {
         Pagination
     },
     computed: {
-      ...mapGetters('posts', ['posts'])
+      ...mapGetters('posts', ['posts', 'loading'])
     },
     async beforeCreate() {
       await this.$store.dispatch('posts/fetchPosts');

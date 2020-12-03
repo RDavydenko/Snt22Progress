@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 // Модули
-import auth from './modules/auth';
+import appState from './modules/appState';
 import cabinet from './modules/cabinet';
 import registration from './modules/registration';
 import documents from './modules/documents';
@@ -17,7 +17,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({  
   modules: {
-    auth,
+    appState,
     cabinet,
     registration,
     documents,

@@ -6,7 +6,7 @@
       <p class="card-text">
        {{ post.text }}
       </p>
-      <router-link :to="`/${post.id}`">
+      <router-link :to="`/post/${post.id}`">
         <button
           style="
             float: left;

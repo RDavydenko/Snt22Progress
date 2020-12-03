@@ -102,7 +102,7 @@ const routes = [
     }
   },  
   {
-    path: '/:id',
+    path: '/post/:id',
     name: 'PostItem',
     component: function () {
       return import('../pages/PostItem.vue')

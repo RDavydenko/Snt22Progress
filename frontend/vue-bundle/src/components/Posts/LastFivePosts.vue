@@ -10,7 +10,7 @@
               color: black;
               padding: 5px;
             "
-            :to="`/${post.id}`"
+            :to="`/post/${post.id}`"
           >
             {{ post.title }}
           </router-link>
@@ -20,7 +20,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-
+ 
 export default {
     computed: {
         ...mapGetters('posts', ['lastFivePosts'])

@@ -42,5 +42,12 @@ namespace Snt22Progress.BussinesLogic.Interfaces
 		/// <param name="dto">Новый пароль и старый пароли</param>
 		/// <returns></returns>
 		Task<ResultResponse> ChangePasswordAsync(int userId, ChangePasswordDto dto);
+
+		/// <summary>
+		/// Получить доступы пользователя
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		Task<ResultResponse<string[]>> GetUserAccess(int userId);
 	}
 }

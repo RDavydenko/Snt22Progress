@@ -88,5 +88,21 @@ namespace Snt22Progress.Web.Api.Controllers
 			}
 			return ResultResponse.GetBadResponse(BussinesLogic.Models.StatusCode.Unauthorized);
 		}
+
+		[HttpGet("is-auth")]
+		public async Task<ResultResponse> IsAuth()
+		{
+			return new ResultResponse(isSuccess: IsAuthorized());
+		}
+
+		[HttpGet("access")]
+		public async Task<ResultResponse<string[]>> GetAccess()
+		{
+			if (IsAuthorized())
+			{				
+				return await _usersService.GetUserAccess(UserId.Value);
+			}
+			return ResultResponse<string[]>.GetBadResponse(BussinesLogic.Models.StatusCode.Unauthorized);
+		}
 	}
 }
