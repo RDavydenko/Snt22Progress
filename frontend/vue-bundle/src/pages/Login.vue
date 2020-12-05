@@ -63,7 +63,7 @@ export default {
       }
       console.log(this.isAuth);
       if (this.isAuth === true) {
-        window.location.replace("/");
+        this.$router.push('/')
       }
     }
   }

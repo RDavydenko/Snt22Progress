@@ -65,6 +65,9 @@ export default {
             } finally {
                 commit('SET_LOADING', { value: false });
             }
+        },
+        clearActivePost({ commit }) {
+            commit('SET_STATE', { paramName: 'activePost', value: {} });
         }
     }
 };

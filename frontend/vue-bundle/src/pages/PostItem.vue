@@ -1,5 +1,5 @@
 <template>
-  <div class="card text-center">
+  <div v-loading="loading" class="card text-center">
     <div class="card-header" id="top">      
       <router-link style="float: left" to="/" exact>Назад</router-link>
     </div>
@@ -26,13 +26,22 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('posts', ['activePost']),
+    ...mapGetters('posts', ['activePost', 'loading']),
     postId() {
       return this.$route.params.id;
     }
   },
-  async mounted() {
-    await this.$store.dispatch('posts/fetchPostById', this.postId);
+  async created() {
+    await this.fetchPost();
+  },
+  watch: {
+    $route: 'fetchPost'
+  },  
+  methods: {
+    async fetchPost() {
+      this.$store.dispatch('posts/clearActivePost');
+      await this.$store.dispatch('posts/fetchPostById', this.postId);
+    }
   }
 };
 </script>

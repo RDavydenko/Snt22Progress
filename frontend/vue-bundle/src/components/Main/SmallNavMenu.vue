@@ -226,7 +226,7 @@ export default {
       localStorage.removeItem('authToken');
       SetAuthorizationToken('empty');
       await this.$store.dispatch('appState/fetchAppState');
-      location.replace('/');
+      this.$router.push('/')
     }
   }
 }
