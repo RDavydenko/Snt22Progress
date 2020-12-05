@@ -90,7 +90,7 @@ namespace Snt22Progress.Web.Api.Controllers
 		}
 
 		[HttpGet("is-auth")]
-		public async Task<ResultResponse> IsAuth()
+		public ResultResponse IsAuth()
 		{
 			return new ResultResponse(isSuccess: IsAuthorized());
 		}

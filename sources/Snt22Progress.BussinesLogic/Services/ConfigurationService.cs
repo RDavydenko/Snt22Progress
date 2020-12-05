@@ -9,9 +9,12 @@ namespace Snt22Progress.BussinesLogic.Services
 	{
 		public UploadedFilesSettings UploadedFilesSettings { get; }
 
-		public ConfigurationService(UploadedFilesSettings uploadedFilesSettings)
+		public WebAppSettings WebAppSettings { get; }
+
+		public ConfigurationService(UploadedFilesSettings uploadedFilesSettings, WebAppSettings webAppSettings)
 		{
 			UploadedFilesSettings = uploadedFilesSettings;
+			WebAppSettings = webAppSettings;
 		}
 	}
 }

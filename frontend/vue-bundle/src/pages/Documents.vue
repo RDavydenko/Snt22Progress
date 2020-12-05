@@ -2,7 +2,7 @@
   <div>
     <h1>Документы</h1>
     <hr />
-    <FotoramaSlider>
+    <FotoramaSlider v-if="documents.length > 0">
       <template>
         <img v-for="doc in documents" :key="doc.id" 
           :src="doc.path.replace('\\', '/')" />

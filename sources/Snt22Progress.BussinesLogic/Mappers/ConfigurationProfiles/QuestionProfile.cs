@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using AutoMapper;
 using Snt22Progress.Contracts.Models.Questions;
@@ -47,7 +48,16 @@ namespace Snt22Progress.BussinesLogic.Mappers.ConfigurationProfiles
 				choises.Add(ch);
 			}
 
+			choises.Sort(new ChoiseDtoComparer());
 			return choises.ToArray();
+		}
+	}
+
+	internal class ChoiseDtoComparer : IComparer<ChoiseDto>
+	{
+		public int Compare([AllowNull] ChoiseDto x, [AllowNull] ChoiseDto y)
+		{
+			return y.VotesCount - x.VotesCount;
 		}
 	}
 }

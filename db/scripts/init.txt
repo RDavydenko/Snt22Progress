@@ -118,6 +118,7 @@ CREATE TABLE progress.advertisements
 	title VARCHAR(70) NOT NULL,
 	text TEXT NULL,
 	price MONEY NOT NULL,
+	phone VARCHAR(15) NOT NULL,
 	image_file_id INT NULL REFERENCES progress.advertisementfiles (id) ON DELETE SET NULL,
 	is_privatizated BOOL NOT NULL DEFAULT FALSE,
 	square INT NOT NULL,

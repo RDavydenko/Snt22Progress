@@ -1,6 +1,6 @@
 CREATE VIEW progress.advertisementsview AS
 SELECT ad.*,
-f.path AS image_path, f.length AS image_length, f.uploaded AS image_uploaded, 
+f.path AS image_path, f.length AS image_length, f.uploaded AS image_uploaded,
 f.native_name AS image_native_name, f.uploader_id AS image_uploader_id,
 um.fname AS image_uploader_fname, um.lname AS image_uploader_lname, um.mname AS image_uploader_mname,
 ca.fname AS creator_fname, ca.lname AS creator_lname, ca.mname AS creator_mname

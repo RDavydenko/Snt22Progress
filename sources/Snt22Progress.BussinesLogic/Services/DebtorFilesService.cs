@@ -88,6 +88,7 @@ namespace Snt22Progress.BussinesLogic.Services
 					await stream.ReadAsync(bytes, 0, (int)dto.File.Length);
 				}
 				var fileManager = new FileManager.Infrasructure.FileManager(
+					baseAddress: _configurationService.WebAppSettings.BaseAddress,
 					folder: _configurationService.UploadedFilesSettings.DebtorFilesFolderRelativePath,
 					progressLogger: _progressLogger);
 				var uploadingResult = await fileManager.UploadFileAsync(new FileDto(dto.File.FileName, bytes),

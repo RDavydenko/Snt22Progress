@@ -2,7 +2,14 @@
   <div>
     <h1>Написать в правление</h1>
     <hr />
-    <form @submit.prevent="submit">
+    <div v-if="!isAuth"
+        class="alert alert-warning"
+        role="alert"
+      >
+        Чтобы отправить письмо, Вам нужно зарегистрироваться или войти.
+    </div>
+    <form v-else
+       @submit.prevent="submit">
       <div class="form-group">
         <div style="width: 380px" class="mt-2">
           <div><label for="title">Тема сообщения</label></div>
@@ -34,6 +41,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data: () => ({
     mail: {
@@ -41,6 +50,9 @@ export default {
       text: ''
     }
   }),
+  computed: {
+    ...mapGetters('appState', ['isAuth'])
+  },
   methods: {
     submit() {
       this.$store.dispatch('sendMail/send', this.mail);

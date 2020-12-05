@@ -15,6 +15,8 @@ namespace Snt22Progress.DataAccess.Models
 
 		public decimal price { get; set; }
 
+		public string phone { get; set; }
+
 		public int? image_file_id { get; set; }
 		public string image_path { get; set; }
 		public int? image_length { get; set; }

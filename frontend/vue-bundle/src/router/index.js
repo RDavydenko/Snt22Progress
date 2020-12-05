@@ -11,6 +11,13 @@ const routes = [
     component: Home
   },
   {
+    path: '/post/:id',
+    name: 'PostItem',
+    component: function () {
+      return import('../pages/PostItem.vue')
+    }
+  },
+  {
     path: '/voting',
     name: 'Voting',
     component: function () {
@@ -95,19 +102,19 @@ const routes = [
     }
   },
   {
+    path: '/sales/:id',
+    name: 'SaleItem',
+    component: function () {
+      return import('../pages/SaleItem.vue')
+    }
+  },
+  {
     path: '/contacts',
     name: 'Contacts',
     component: function () {
       return import('../pages/Contacts.vue')
     }
-  },  
-  {
-    path: '/post/:id',
-    name: 'PostItem',
-    component: function () {
-      return import('../pages/PostItem.vue')
-    }
-  },
+  } 
 ]
 
 const router = new VueRouter({

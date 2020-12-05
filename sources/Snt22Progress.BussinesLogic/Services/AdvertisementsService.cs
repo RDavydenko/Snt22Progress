@@ -91,6 +91,7 @@ namespace Snt22Progress.BussinesLogic.Services
 				if (dto.Image != null) // Загрузить картинку (опционально)
 				{
 					var fileManager = new FileManager.Infrasructure.FileManager(
+						baseAddress: _configurationService.WebAppSettings.BaseAddress,
 						folder: _configurationService.UploadedFilesSettings.AdvertisementFilesFolderRelativePath,
 						progressLogger: _progressLogger);
 					var bytes = new byte[dto.Image.Length];

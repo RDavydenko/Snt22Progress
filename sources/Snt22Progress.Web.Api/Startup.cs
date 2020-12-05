@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -11,12 +12,14 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Snt22Progress.BussinesLogic;
 using Snt22Progress.BussinesLogic.Interfaces;
+using Snt22Progress.BussinesLogic.Models;
 using Snt22Progress.BussinesLogic.Services;
 using Snt22Progress.DataAccess.Infrastructure;
 using Snt22Progress.DataAccess.Models;
@@ -66,10 +69,14 @@ namespace Snt22Progress.Web.Api
 			// Сервис для безболезненного проброса всяких констант (к примеру из appsettings)
 			services.AddSingleton<ConfigurationService>(f =>
 			{
-				return new ConfigurationService(new BussinesLogic.Models.UploadedFilesSettings(
+				return new ConfigurationService
+					(new UploadedFilesSettings(
 						documentsFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("DocumentsFilesFolderRelativePath")?.Value,
 						advertisementFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("AdvertisementFilesFolderRelativePath")?.Value,
 						debtorFilesFolderRelativePath: Configuration.GetSection("UploadedFilesSettings")?.GetSection("DebtorFilesFolderRelativePath")?.Value
+						),
+					new WebAppSettings(
+						baseAddress: Configuration.GetSection("AppDomain")?.GetSection("BaseUrl")?.Value
 					));
 			});
 
@@ -109,6 +116,7 @@ namespace Snt22Progress.Web.Api
 			services.AddTransient<IDebtorFilesService, DebtorFilesService>();
 			services.AddTransient<IAdvertisementsService, AdvertisementsService>();
 			services.AddTransient<IQuestionsService, QuestionsService>();
+			services.AddTransient<IValuePairsService, ValuePairsService>();
 
 			// Маппер
 			services.AddTransient<IMapper>(f => (new MapperConfiguration(cfg => cfg.AddMaps(new Assembly[] { BussinesLogicAssembly.Assembly })))
@@ -162,6 +170,15 @@ namespace Snt22Progress.Web.Api
 				builder.WithMethods(allowedMethods);
 				builder.WithHeaders(allowedHeaders);
 				builder.WithOrigins(allowedOrigins);
+			});
+
+			// Настройка файлового сервера
+			app.UseStaticFiles(new StaticFileOptions
+			{
+				FileProvider = new PhysicalFileProvider(
+					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Upload")),
+				RequestPath = "/Upload",
+				
 			});
 
 			app.UseAuthentication();

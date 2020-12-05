@@ -13,6 +13,7 @@ namespace Snt22Progress.FileManager.Infrasructure
 	/// </summary>
 	public class FileManager
 	{
+		private readonly string _baseAddress;
 		private readonly string _folder;
 		private readonly IProgressLogger _progressLogger;
 
@@ -21,9 +22,12 @@ namespace Snt22Progress.FileManager.Infrasructure
 		/// <summary>
 		/// Конструктор класса
 		/// </summary>
+		/// <param name="baseAddress">Базовый адрес</param>
 		/// <param name="folder">Имя папки, с которой будем работать</param>
-		public FileManager(string folder, IProgressLogger progressLogger = null)
+		/// <param name="progressLogger">Логгер (опционально)</param>
+		public FileManager(string baseAddress, string folder, IProgressLogger progressLogger = null)
 		{
+			_baseAddress = baseAddress;
 			_folder = folder;
 			_progressLogger = progressLogger;
 		}
@@ -38,6 +42,8 @@ namespace Snt22Progress.FileManager.Infrasructure
 		{
 			try
 			{
+				file.FileName = file.FileName.Replace(' ', '_'); // Заменяем все пробелы в названии на нижнее подчеркивание
+
 				if (file.FileName.Contains("\\") || file.FileName.Contains("/"))
 				{
 					return new FileOperationResult { IsSuccess = false, ErrorDescription = "Названия файлов не должны содержать слешей (/ и \\)" };
@@ -55,20 +61,23 @@ namespace Snt22Progress.FileManager.Infrasructure
 					Directory.CreateDirectory(_absolutePath);
 				}
 
-				var hypotheticalFileName = Path.Combine(_absolutePath, file.FileName);
-				string realUniqueFilePath;
-				if (File.Exists(hypotheticalFileName))
+				var hypotheticalFilePath = Path.Combine(_absolutePath, file.FileName);
+				string realUniqueFilePath; // Физический путь к файлу (Включает кучу папок, букву диска и т.д.)
+				string realFileName;
+				if (File.Exists(hypotheticalFilePath))
 				{
-					realUniqueFilePath = Path.Combine(_absolutePath, DateTime.Now.ToString("yyyy-MM-dd_mm-ss-fff") + "_" + file.FileName);
+					realFileName = DateTime.Now.ToString("yyyy-MM-dd_mm-ss-fff") + "_" + file.FileName;
+					realUniqueFilePath = Path.Combine(_absolutePath, realFileName);
 				}
 				else
 				{
-					realUniqueFilePath = hypotheticalFileName;
+					realFileName = file.FileName;
+					realUniqueFilePath = hypotheticalFilePath;
 				}
 
 				await File.WriteAllBytesAsync(realUniqueFilePath, file.Bytes);
 
-				return new FileOperationResult { IsSuccess = true, FilePath = realUniqueFilePath };
+				return new FileOperationResult { IsSuccess = true, FilePath = Path.Combine(_baseAddress, _folder, realFileName) };
 			}
 			catch (Exception ex)
 			{

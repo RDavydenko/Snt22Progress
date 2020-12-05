@@ -15,6 +15,8 @@ namespace Snt22Progress.Contracts.Models.Advertisements
 
 		public decimal Price { get; set; }
 
+		public string Phone { get; set; }
+
 		public bool IsPrivatizated { get; set; }
 
 		public int Square { get; set; }

@@ -2,7 +2,7 @@
   <div>
     <h1>Должники</h1>
     <hr />
-    <FotoramaSlider>
+    <FotoramaSlider v-if="debtors.length > 0">
       <template>
         <img 
           v-for="debtor in debtors"

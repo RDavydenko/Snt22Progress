@@ -16,10 +16,13 @@ namespace Snt22Progress.Web.Api.Controllers
 	public class SalesController : BaseApiController
 	{
 		private readonly IAdvertisementsService _advertisementsService;
+		private readonly IValuePairsService _valuePairsService;
 
-		public SalesController(IAdvertisementsService advertisementsService)
+		public SalesController(IAdvertisementsService advertisementsService,
+			IValuePairsService valuePairsService)
 		{
 			_advertisementsService = advertisementsService;
+			_valuePairsService = valuePairsService;
 		}
 
 		/// <summary>
@@ -98,6 +101,22 @@ namespace Snt22Progress.Web.Api.Controllers
 				return await _advertisementsService.RemoveAdvertisementAsync(id);
 			}
 			return ResultResponse.GetBadResponse(BussinesLogic.Models.StatusCode.Forbidden);
+		}
+
+		/// <summary>
+		/// Стандартная картинка
+		/// </summary>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet("get-default-image")]
+		[ResponseCache(Duration = 3600)]
+		public async Task<ResultResponse<string>> GetDefaultImage()
+		{
+			if (IsAuthorized())
+			{
+				return await _valuePairsService.GetValueAsync(ValuePairsKeys.DefaultImagePath);
+			}
+			return ResultResponse<string>.GetBadResponse(BussinesLogic.Models.StatusCode.Forbidden);
 		}
 	}
 }
