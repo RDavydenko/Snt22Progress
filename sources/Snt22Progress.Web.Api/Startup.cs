@@ -152,10 +152,6 @@ namespace Snt22Progress.Web.Api
 				opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Snt 22 Progress API");
 			});
 
-			// Разрешить использование статических файлов (для загруженных фото и т.д.)
-			var requestPathForStaticFiles = "/Upload";
-			app.UseStaticFiles(requestPathForStaticFiles);
-
 			// Класс для хранения и удобной передачи зависимостей, чтобы не городить кучу параметров в конструкторах
 			Global.Initialize(
 				authService: app.ApplicationServices.GetService<IAuthService>()
@@ -174,12 +170,14 @@ namespace Snt22Progress.Web.Api
 			});
 
 			// Настройка файлового сервера
+			var directoryForUploads = "Upload";
+			var directoryForUploadsFullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, directoryForUploads);
+			if (!Directory.Exists(directoryForUploadsFullPath)) Directory.CreateDirectory(directoryForUploadsFullPath);
 			app.UseStaticFiles(new StaticFileOptions
 			{
 				FileProvider = new PhysicalFileProvider(
-					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Upload")),
-				RequestPath = "/Upload",
-				
+					directoryForUploadsFullPath),
+				RequestPath = $"/{directoryForUploads}",
 			});
 
 			app.UseAuthentication();
