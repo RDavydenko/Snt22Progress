@@ -142,6 +142,7 @@ namespace Snt22Progress.Web.Api
 			}
 
 			app.UseHttpsRedirection();
+			app.UseHsts();
 
 			app.UseRouting();
 
