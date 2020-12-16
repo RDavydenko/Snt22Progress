@@ -13,7 +13,7 @@ CREATE TABLE progress.users
 	
 	registered TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP,
 	is_banned BOOL NOT NULL DEFAULT FALSE,
-	is_government_member BOOL NOT NULL DEFAULT FALSE,
+	is_government_member BOOL NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE progress.roles
