@@ -1,22 +1,16 @@
-FROM node:lts-alpine
+FROM node:alpine
 
-# устанавливаем простой HTTP-сервер для статики
-RUN npm install -g http-server
+# делаем каталог 'usr/app/front' текущим рабочим каталогом
+WORKDIR /usr/app/front
 
-# делаем каталог 'app' текущим рабочим каталогом
-WORKDIR /app
+# Открываем порт 8080 - дефолтный порт для Vue.js. Дальнейшая связь с приложением, запущенным в контейнере, будет происходить через этот порт
+EXPOSE 8080
 
-# копируем оба 'package.json' и 'package-lock.json' (если есть)
-COPY package*.json ./
+# Копируем содержимое исходного проекта в рабочую папку контейнера
+COPY ./ ./
 
 # устанавливаем зависимости проекта
 RUN npm install
 
-# копируем файлы и каталоги проекта в текущий рабочий каталог (т.е. в каталог 'app')
-COPY . .
-
-# собираем приложение для production с минификацией
-RUN npm run build
-
-EXPOSE 8080
-CMD [ "http-server", "dist" ]
+# Запускаем приложение командой npm run serve
+CMD [ "npm", "run", "serve" ]

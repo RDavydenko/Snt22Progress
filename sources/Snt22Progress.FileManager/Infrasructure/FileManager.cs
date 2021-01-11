@@ -62,7 +62,7 @@ namespace Snt22Progress.FileManager.Infrasructure
 				}
 
 				var hypotheticalFilePath = Path.Combine(_absolutePath, file.FileName);
-				string realUniqueFilePath; // Физический путь к файлу (Включает кучу папок, букву диска и т.д.)
+				string realUniqueFilePath; // Физический путь к файлу (Включает кучу папок, букву диска и т.д.)				
 				string realFileName;
 				if (File.Exists(hypotheticalFilePath))
 				{
@@ -74,10 +74,11 @@ namespace Snt22Progress.FileManager.Infrasructure
 					realFileName = file.FileName;
 					realUniqueFilePath = hypotheticalFilePath;
 				}
+				string serverFilePath = Path.Combine(_baseAddress, _folder, realFileName);  // Путь к файлу через сервер (<протокол><домен><путь>)
 
 				await File.WriteAllBytesAsync(realUniqueFilePath, file.Bytes);
 
-				return new FileOperationResult { IsSuccess = true, FilePath = Path.Combine(_baseAddress, _folder, realFileName) };
+				return new FileOperationResult { IsSuccess = true, FilePath = serverFilePath };
 			}
 			catch (Exception ex)
 			{

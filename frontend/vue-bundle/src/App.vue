@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-loading.sync="loading">
+  <div id="app" v-loading.fullscreen.sync="loading">
     <div class="container-lg">
       <!-- Big nav menu -->
       <BigNavMenu />
