@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Snt22Progress.DataAccess.Infrastructure;
 
-namespace Snt22Progress.DataAccess.Models
+namespace Snt22Progress.Contracts.Models
 {
 	public class QuestionFullDto
 	{

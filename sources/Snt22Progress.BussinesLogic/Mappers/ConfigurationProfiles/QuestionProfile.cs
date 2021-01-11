@@ -5,6 +5,7 @@ using System.Text;
 using AutoMapper;
 using Snt22Progress.Contracts.Models.Questions;
 using Snt22Progress.DataAccess.Models;
+using Snt22Progress.Contracts.Models;
 
 namespace Snt22Progress.BussinesLogic.Mappers.ConfigurationProfiles
 {

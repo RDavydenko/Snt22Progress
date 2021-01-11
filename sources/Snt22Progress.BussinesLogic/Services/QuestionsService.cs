@@ -9,6 +9,7 @@ using Snt22Progress.BussinesLogic.Models;
 using Snt22Progress.Contracts.Models.Questions;
 using Snt22Progress.DataAccess.Infrastructure;
 using Snt22Progress.DataAccess.Models;
+using Snt22Progress.Contracts.Models;
 using Snt22Progress.Logging;
 
 namespace Snt22Progress.BussinesLogic.Services
